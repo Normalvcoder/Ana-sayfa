@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MEB Müfredatı Fizik Deneyleri & VR Laboratuvarı Panosu</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: #f8fafc;
+            color: #0f172a;
+            line-height: 1.6;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Kenar Çubuğu (Sidebar) Tasarımı */
+        .sidebar {
+            width: 320px;
+            background-color: #1e293b;
+            color: #f8fafc;
+            padding: 2rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid #334155;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            margin-bottom: 2.5rem;
+            border-bottom: 1px solid #334155;
+            padding-bottom: 1.5rem;
+        }
+
+        .sidebar-header h1 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #38bdf8;
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar-header p {
+            font-size: 0.85rem;
+            color: #94a3b8;
+        }
+
+        .nav-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .nav-item {
+            padding: 1rem;
+            background-color: #334155;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border-left: 4px solid transparent;
+        }
+
+        .nav-item:hover {
+            background-color: #475569;
+            transform: translateX(4px);
+        }
+
+        .nav-item.active {
+            background-color: #0f766e;
+            border-left-color: #2dd4bf;
+        }
+
+        .nav-item h3 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .nav-item span {
+            font-size: 0.75rem;
+            color: #cbd5e1;
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            display: inline-block;
+        }
+
+        /* Ana İçerik Alanı */
+        .main-content {
+            margin-left: 320px;
+            flex: 1;
+            padding: 3rem;
+            max-width: 1000px;
+        }
+
+        .welcome-panel {
+            background: linear-gradient(135deg, #0f766e, #0d9488);
+            color: white;
+            padding: 2.5rem;
+            border-radius: 16px;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .welcome-panel h2 {
+            font-size: 1.8rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .welcome-panel p {
+            color: #ccfbf1;
+            max-width: 700px;
+        }
+
+        /* Deney Detay Kartı */
+        .detail-card {
+            background-color: white;
+            border-radius: 16px;
+            padding: 2.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border: 1px solid #e2e8f0;
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .detail-card.active {
+            display: block;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #f1f5f9;
+            padding-bottom: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .card-title-area h2 {
+            font-size: 1.6rem;
+            color: #1e293b;
+            font-weight: 700;
+        }
+
+        .grade-badge {
+            background-color: #e0f2fe;
+            color: #0369a1;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            color: #475569;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .content-box {
+            background-color: #f8fafc;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border-left: 4px solid #94a3b8;
+            font-size: 1.05rem;
+            color: #334155;
+        }
+
+        .vr-box {
+            background-color: #f0fdfa;
+            border-radius: 12px;
+            padding: 1.5rem;
+            border-left: 4px solid #0d9488;
+            font-size: 1.05rem;
+            color: #115e59;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive Tasarım */
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                padding: 1.5rem;
+            }
+            .main-content {
+                margin-left: 0;
+                padding: 1.5rem;
+            }
+        }
+        /* Video Konteyner Tasarımı */
+        .video-container {
+            width: 100%;
+            margin-top: 2rem;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+            background-color: #000;
+            border: 2px solid #2dd4bf;
+        }
+
+        .video-container video {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sol Menü -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h1>VR Fizik Laboratuvarı</h1>
+            <p>MEB Müfredat Uyumlu Deney Pano Uygulaması</p>
+        </div>
+        <ul class="nav-list">
+            <li class="nav-item active" onclick="showExperiment(1, this)">
+                <h3>1. Sürtünme Kuvveti</h3>
+                <span>9. Sınıf</span>
+            </li>
+            <li class="nav-item" onclick="showExperiment(2, this)">
+                <h3>2. Eğik Düzlemde İvme</h3>
+                <span>11. Sınıf</span>
+            </li>
+            <li class="nav-item" onclick="showExperiment(3, this)">
+                <h3>3. Ohm Yasası & Reosta</h3>
+                <span>10. Sınıf</span>
+            </li>
+            <li class="nav-item" onclick="showExperiment(4, this)">
+                <h3>4. Merkezi Çarpışmalar</h3>
+                <span>11. Sınıf</span>
+            </li>
+            <li class="nav-item" onclick="showExperiment(5, this)">
+                <h3>5. Manyetik Alan & Yük</h3>
+                <span>11. Sınıf</span>
+            </li>
+            <li class="nav-item" onclick="showExperiment(6, this)">
+                <h3>6. Fotodiyot & UV Işık</h3>
+                <span>12. Sınıf</span>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Ana İçerik Alanı -->
+    <div class="main-content">
+        <div class="welcome-panel">
+            <h2>Fizik Deneyleri Keşif Paneline Hoş Geldiniz</h2>
+            <p>Sol taraftaki menüyü kullanarak 6 farklı fizik deneyinin MEB müfredatındaki yerini, konusunu ve geleneksel sınıf ortamlarına kıyasla VR (Sanal Gerçeklik) teknolojisinde işlenmesinin getirdiği devrimsel avantajları inceleyebilirsiniz.</p>
+            
+            <div class="video-container">
+                <video controls poster="video_kapak_resmi.jpg">
+                    <source src="proje_tanitim.mp4" type="video/mp4">
+                    Tarayıcınız bu videoyu oynatmayı desteklemiyor.
+                </video>
+            </div>
+        </div>
+
+        <!-- DENEY 1 -->
+        <div id="exp-1" class="detail-card active">
+            <div class="card-header">
+                <div class="card-title-area">
+                    <h2>Sürtünme Kuvveti Deneyi</h2>
+                </div>
+                <span class="grade-badge">9. Sınıf - Kuvvet ve Hareket</span>
+            </div>
+            <div class="section-title">Deneyin Konusu ve Kapsamı</div>
+            <div class="content-box">
+                Cismin ağırlığının (yüzeye uygulanan dik kuvvetin) ve temas eden yüzeylerin cinsinin, cismi harekete geçirmek veya hareketini sürdürmek için gereken sürtünme kuvvetine etkisinin incelenmesi.
+            </div>
+            <div class="section-title">VR (Sanal Gerçeklik) Kullanım Avantajları</div>
+            <div class="vr-box">
+                Gerçek laboratuvarda dinamometre okurken yapılan insan kaynaklı hataları sıfıra indirir. Cismin tam harekete geçtiği o kritik anı yakalayarak, statik sürtünmenin kinetik sürtünmeye dönüştüğü kırılma noktasını milisaniyelik, kusursuz grafikler halinde anında havaya çizer.
+            </div>
+        </div>
+        <!-- DENEY 2 -->
+        <div id="exp-2" class="detail-card">
+            <div class="card-header">
+                <div class="card-title-area">
+                    <h2>Eğik Düzlemde İvme Deneyi</h2>
+                </div>
+                <span class="grade-badge">11. Sınıf (ve 9. Sınıf) - Mekanik</span>
+            </div>
+            <div class="section-title">Deneyin Konusu ve Kapsamı</div>
+            <div class="content-box">
+                Bir rampa (eğik düzlem) üzerinden serbest bırakılan küresel bir cismin, yerçekimi ivmesinin bileşenleri nedeniyle yaptığı hızlanan hareketin ve ivmenin rampa açısıyla ilişkisinin gözlemlenmesi.
+            </div>
+            <div class="section-title">VR (Sanal Gerçeklik) Kullanım Avantajları</div>
+            <div class="vr-box">
+                Gerçek dünyada sıfırlanması imkansız olan hava direnci ve sürtünme gibi kayıpları tamamen kapatarak kusursuz bir "ideal fizik ortamı" sunar.
+            </div>
+        </div>
+
+        <!-- DENEY 3 -->
+        <div id="exp-3" class="detail-card">
+            <div class="card-header">
+                <div class="card-title-area">
+                    <h2>Ohm Yasası ve Reosta Deneyi</h2>
+                </div>
+                <span class="grade-badge">10. Sınıf - Elektrik ve Manyetizma</span>
+            </div>
+            <div class="section-title">Deneyin Konusu ve Kapsamı</div>
+            <div class="content-box">
+                Bir elektrik devresindeki reosta (ayarlanabilir direnç) sürgüsü hareket ettirilerek direnç değerinin değiştirilmesi; buna bağlı olarak akım ve voltaj değerlerinin değişim ilişkisinin (V = I &times; R) incelenmesi.
+            </div>
+            <div class="section-title">VR (Sanal Gerçeklik) Kullanım Avantajları</div>
+            <div class="vr-box">
+                Öğrencilerin aletleri bozma veya kısa devre yapma korkusu olmadan, güvenli bir sanal ortamda istedikleri kadar deneme yanılma yapabilmesini sağlar.
+            </div>
+        </div>
+
+        <!-- DENEY 4 -->
+        <div id="exp-4" class="detail-card">
+            <div class="card-header">
+                <div class="card-title-area">
+                    <h2>Merkezi Esnek Çarpışmalar Deneyi</h2>
+                </div>
+                <span class="grade-badge">11. Sınıf - İtme ve Çizgisel Momentum</span>
+            </div>
+            <div class="section-title">Deneyin Konusu ve Kapsamı</div>
+            <div class="content-box">
+                İki cismin doğrusal bir hat üzerinde kafa kafaya çarpışması sürecinde, kütle ve ilk hız parametreleri manipüle edilerek çarpışma öncesi ve sonrası hız/momentum değişimlerinin karşılaştırılması.
+            </div>
+            <div class="section-title">VR (Sanal Gerçeklik) Kullanım Avantajları</div>
+            <div class="vr-box">
+                Cisimlerin kütle ve hız değerlerini dilediğiniz gibi değiştirip, çarpışma sonrası hızların nasıl etkilendiğini ekranda canlı olarak görmenizi sağlar.
+            </div>
+        </div>
+
+        <!-- DENEY 5 -->
+        <div id="exp-5" class="detail-card">
+            <div class="card-header">
+                <div class="card-title-area">
+                    <h2>Manyetik Alanda Yüklü Parçacık Deneyi</h2>
+                </div>
+                <span class="grade-badge">11. Sınıf - Manyetizma</span>
+            </div>
+            <div class="section-title">Deneyin Konusu ve Kapsamı</div>
+            <div class="content-box">
+                Sayfa düzlemine dik düzgün bir manyetik alan içerisine fırlatılan yüklü bir parçacığın; yük miktarı, kütlesi, hızı ve alan şiddetine bağlı olarak çizdiği çembersel yörüngenin ve sapma yönünün analizi.
+            </div>
+            <div class="section-title">VR (Sanal Gerçeklik) Kullanım Avantajları</div>
+            <div class="vr-box">
+                Parçacığın kütlesini, hızını, elektrik yükünü ve manyetik alanın şiddetini dilediğiniz gibi değiştirerek, yörüngenin bu değerlere göre nasıl şekillendiğini anında görmenizi sağlar.
+            </div>
+        </div>
+
+        <!-- DENEY 6 -->
+        <div id="exp-6" class="detail-card">
+            <div class="card-header">
+                <div class="card-title-area">
+                    <h2>Fotodiyot ve Işık Şiddeti Deneyi</h2>
+                </div>
+                <span class="grade-badge">12. Sınıf - Modern Fiziğin Teknolojideki Uygulamaları</span>
+            </div>
+            <div class="section-title">Deneyin Konusu ve Kapsamı</div>
+            <div class="content-box">
+                bağlı bir devrede fotodiyot üzerine düşen görünür ışık şiddetinin akıma etkisinin ölçülmesi ve deneyin yüksek enerjili UV (morötesi) ışık kaynaklarıyla tekrarlanarak spektrum duyarlılığının karşılaştırılması.
+            </div>
+            <div class="section-title">VR (Sanal Gerçeklik) Kullanım Avantajları</div>
+            <div class="vr-box">
+                Gerçek laboratuvarlarda göz ve cilt için tehlikeli olabilen UV (morötesi) ışınlarla yapılacak deneyleri, hiçbir sağlık riski olmadan ve tamamen güvenli bir sanal ortamda test etmenizi sağlar.
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Sekme Değiştirme Scripti -->
+    <script>
+        function showExperiment(id, element) {
+            // Aktif menü elemanını değiştirme
+            const items = document.querySelectorAll('.nav-item');
+            items.forEach(item => item.classList.remove('active'));
+            element.classList.add('active');
+
+            // Aktif içerik kartını değiştirme
+            const cards = document.querySelectorAll('.detail-card');
+            cards.forEach(card => card.classList.remove('active'));
+            
+            const targetCard = document.getElementById('exp-' + id);
+            if (targetCard) {
+                targetCard.classList.add('active');
+            }
+        }
+    </script>
+</body>
+</html>
