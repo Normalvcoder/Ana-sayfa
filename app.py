@@ -1,7 +1,16 @@
-from flask import Flask
+from flask import Flask, render_template
 
-app = Flask(__name__) # Initialize the app
+app = Flask(__name__)
 
-@app.route("/") # Define the URL route
-def hello_world(): # Define the view function
-    return "<p>Hello, World!</p>" # The response
+# This is your main homepage route
+@app.route('/')
+def home():
+    return render_template('anasayfa.html')
+
+# This is the route for your second page
+@app.route('/fiziklab')
+def fizik_lab():
+    return render_template('vrfiziklab.html')
+
+if __name__ == '__main__':
+    app.run(debug=True)
