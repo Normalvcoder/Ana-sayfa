@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OYAKDER | Geleceğin Fen Laboratuvarı</title>
+    <title>ÖYADSAVTEK| Geleceğin Fen Laboratuvarı</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
@@ -30,7 +30,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-20">
                 <div class="flex items-center gap-2">
-                    <span class="font-black text-2xl tracking-tighter text-slate-900">OYAK<span class="text-blue-600">DER</span></span>
+                    <span class="font-black text-2xl tracking-tighter text-slate-900">OYAD<span class="text-blue-600">SAVTEK</span></span>
                 </div>
                 <div class="hidden md:flex space-x-8">
                     <a href="#vr-deneyimi" class="text-slate-600 hover:text-blue-600 font-medium transition">Neden VR?</a>
@@ -66,8 +66,9 @@
                     <span class="w-3 h-3 rounded-full bg-red-500"></span>
                     Sınıfınıza Sığan Lab - Demo
                 </div>
-                <video class="w-full aspect-video object-cover" controls poster="Gemini_Generated_Image_gkshoxgkshoxgksh.png">
-                    <source src="demo-video.mp4" type="video/mp4">
+                <!-- VİDEO VE POSTER GÜNCELLENDİ -->
+                <video class="w-full aspect-video object-cover" controls poster="{{ url_for('static', filename='images/Gemini_Generated_Image_gkshoxgkshoxgksh.png') }}">
+                    <source src="{{ url_for('static', filename='demo-video.mp4') }}" type="video/mp4">
                     Tarayıcınız video desteklemiyor.
                 </video>
             </div>
@@ -98,7 +99,7 @@
             <div class="grid md:grid-cols-2 gap-8">
                 <!-- Özellik 1 -->
                 <div class="feature-card relative rounded-2xl overflow-hidden bg-slate-800 aspect-video group">
-                    <img src="Gemini_Generated_Image_gkshoxgkshoxgksh.png" alt="Güvenli ve Modern Eğitim" class="w-full h-full object-cover opacity-60 group-hover:opacity-40">
+                    <img src="{{ url_for('static', filename='images/Gemini_Generated_Image_gkshoxgkshoxgksh.png') }}" alt="Güvenli ve Modern Eğitim" class="w-full h-full object-cover opacity-60 group-hover:opacity-40">
                     <div class="absolute inset-0 p-8 flex flex-col justify-end bg-gradient-to-t from-slate-900 via-slate-900/60 to-transparent">
                         <h3 class="text-2xl font-bold mb-2">Güvenli ve Modern Eğitim</h3>
                         <p class="text-slate-300">Öğrenciler modern, temiz bir sınıfta, en son teknoloji VR gözlüklerle, dış dünyadan kopmadan tamamen odaklanmış bir şekilde eğitim görüyor.</p>
@@ -107,7 +108,7 @@
 
                 <!-- Özellik 2 -->
                 <div class="feature-card relative rounded-2xl overflow-hidden bg-slate-800 aspect-video group">
-                    <img src="Gemini_Generated_Image_sh4xscsh4xscsh4x.png" alt="Sınıfınıza Sığan Laboratuvar" class="w-full h-full object-cover opacity-60 group-hover:opacity-40">
+                    <img src="{{ url_for('static', filename='images/Gemini_Generated_Image_sh4xscsh4xscsh4x.png') }}" alt="Sınıfınıza Sığan Laboratuvar" class="w-full h-full object-cover opacity-60 group-hover:opacity-40">
                     <div class="absolute inset-0 p-8 flex flex-col justify-end bg-gradient-to-t from-slate-900 via-slate-900/60 to-transparent">
                         <h3 class="text-2xl font-bold mb-2">Sınıfınıza Sığan Laboratuvar</h3>
                         <p class="text-slate-300">Sınıf ortamından kopmadan; görünmez fizik vektörlerini, kimyasal moleküler yapıları ve biyolojik sistemleri anında 3D olarak deneyimliyorlar.</p>
@@ -116,7 +117,7 @@
 
                 <!-- Özellik 3 -->
                 <div class="feature-card relative rounded-2xl overflow-hidden bg-slate-800 aspect-video group">
-                    <img src="Gemini_Generated_Image_uml47quml47quml4.png" alt="Tehlikesiz Deneyimler" class="w-full h-full object-cover opacity-60 group-hover:opacity-40">
+                    <img src="{{ url_for('static', filename='images/Gemini_Generated_Image_uml47quml47quml4.png') }}" alt="Tehlikesiz Deneyimler" class="w-full h-full object-cover opacity-60 group-hover:opacity-40">
                     <div class="absolute inset-0 p-8 flex flex-col justify-end bg-gradient-to-t from-slate-900 via-slate-900/60 to-transparent">
                         <h3 class="text-2xl font-bold mb-2">Tehlikesiz Deneyimler</h3>
                         <p class="text-slate-300">Zehirli kimyasal reaksiyonlar, elektrik akımları veya biyolojik örnekler gibi tehlikeli olabilecek süreçler, sıfır riskle sanal ortamda gözlemleniyor.</p>
@@ -125,7 +126,7 @@
 
                 <!-- Özellik 4 -->
                 <div class="feature-card relative rounded-2xl overflow-hidden bg-slate-800 aspect-video group">
-                    <img src="Gemini_Generated_Image_unrucyunrucyunru.png" alt="Veri ve Kontrol" class="w-full h-full object-cover opacity-60 group-hover:opacity-40">
+                    <img src="{{ url_for('static', filename='images/Gemini_Generated_Image_unrucyunrucyunru.png') }}" alt="Veri ve Kontrol" class="w-full h-full object-cover opacity-60 group-hover:opacity-40">
                     <div class="absolute inset-0 p-8 flex flex-col justify-end bg-gradient-to-t from-slate-900 via-slate-900/60 to-transparent">
                         <h3 class="text-2xl font-bold mb-2">Kusursuz Veri ve Kontrol</h3>
                         <p class="text-slate-300">Türkçe veri tabloları ve reaksiyon formülleri havada belirir. "İdeal fizik" ortamı sayesinde kesin veri takibi ve anlık parametre kontrolü sağlanır.</p>
@@ -147,8 +148,7 @@
                 <!-- 1. Yüksek Lab Maliyeti -->
                 <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col group hover:shadow-md transition-shadow duration-300">
                     <div class="overflow-hidden rounded-xl mb-6 h-56 bg-slate-100">
-                        <!-- Görseli buraya ekleyeceksin -->
-                        <img src="Yüksek Lab Maliyeti.jpg" alt="Yüksek Maliyet" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <img src="{{ url_for('static', filename='images/Yüksek Lab Maliyeti.jpg') }}" alt="Yüksek Maliyet" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                     </div>
                     <h4 class="text-lg font-bold text-slate-800 mb-2 flex items-center gap-2"><span class="text-red-500">❌</span> Yüksek Lab Maliyeti & Sınırlı Malzeme</h4>
                     <p class="text-slate-500 text-sm mb-6">Sürekli tükenen malzemeler, bozulan pahalı ekipmanlar (osiloskop, dinamometre) yüzünden deneyler yapılamıyor.</p>
@@ -160,8 +160,7 @@
                 <!-- 2. Güvenlik Endişesi -->
                 <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col group hover:shadow-md transition-shadow duration-300">
                     <div class="overflow-hidden rounded-xl mb-6 h-56 bg-slate-100">
-                        <!-- Görseli buraya ekleyeceksin -->
-                        <img src="Güvenlik Endişeleri.jpg" alt="Güvenlik Endişesi" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <img src="{{ url_for('static', filename='images/Güvenlik Endişeleri.jpg') }}" alt="Güvenlik Endişesi" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                     </div>
                     <h4 class="text-lg font-bold text-slate-800 mb-2 flex items-center gap-2"><span class="text-red-500">❌</span> Güvenlik Endişesi</h4>
                     <p class="text-slate-500 text-sm mb-6">Zehirli gazlar, asit-baz yanıkları, UV ışınları ve kısa devre riskleri yüzünden tehlikeli reaksiyonlar sınıflarda gösterilemiyor.</p>
@@ -173,8 +172,7 @@
                 <!-- 3. Zaman Yetersizliği -->
                 <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col group hover:shadow-md transition-shadow duration-300">
                     <div class="overflow-hidden rounded-xl mb-6 h-56 bg-slate-100">
-                        <!-- Görseli buraya ekleyeceksin -->
-                        <img src="Zaman Yetersizliği.jpg" alt="Zaman Yetersizliği" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <img src="{{ url_for('static', filename='images/Zaman Yetersizliği.jpg') }}" alt="Zaman Yetersizliği" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                     </div>
                     <h4 class="text-lg font-bold text-slate-800 mb-2 flex items-center gap-2"><span class="text-red-500">❌</span> Zaman Yetersizliği & Kalitesiz Görüntü</h4>
                     <p class="text-slate-500 text-sm mb-6">Kurulum ve temizlik dersi bitiriyor. Ayrıca mikroskoplar yetersiz, DNA/Mitoz gibi soyut süreçler anlaşılamıyor.</p>
@@ -186,8 +184,7 @@
                 <!-- 4. İmkansız Deneyler -->
                 <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col group hover:shadow-md transition-shadow duration-300">
                     <div class="overflow-hidden rounded-xl mb-6 h-56 bg-slate-100">
-                        <!-- Görseli buraya ekleyeceksin -->
-                        <img src="İmkansız deneyler.jpg" alt="İmkansız Deneyler" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <img src="{{ url_for('static', filename='images/İmkansız deneyler.jpg') }}" alt="İmkansız Deneyler" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                     </div>
                     <h4 class="text-lg font-bold text-slate-800 mb-2 flex items-center gap-2"><span class="text-red-500">❌</span> İmkansız Deneyler & Eşitsizlik</h4>
                     <p class="text-slate-500 text-sm mb-6">Uzay boşluğunda serbest düşüş, hayvan diseksiyonu (etik sorunlar) veya ışık dalgalarını elle tutmak gerçekte imkansızdır.</p>
@@ -210,8 +207,7 @@
             <div class="grid md:grid-cols-3 gap-8">
                 <!-- FİZİK LAB -->
                 <div class="group rounded-3xl overflow-hidden border border-slate-200 shadow-xl relative bg-slate-900">
-                    <!-- iStock Foto -->
-                    <img src="istockphoto-664198918-1024x1024.jpg" alt="Fizik Lab" class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-40 transition-opacity duration-300">
+                    <img src="{{ url_for('static', filename='images/istockphoto-664198918-1024x1024.jpg') }}" alt="Fizik Lab" class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-40 transition-opacity duration-300">
                     <div class="p-8 relative z-10 flex flex-col h-full justify-between min-h-[400px]">
                         <div>
                             <h3 class="text-3xl font-bold mb-3 text-white">Fizik</h3>
@@ -223,8 +219,7 @@
 
                 <!-- KİMYA LAB -->
                 <div class="group rounded-3xl overflow-hidden border border-slate-200 shadow-xl relative bg-slate-900">
-                    <!-- iStock Foto -->
-                    <img src="istockphoto-990711646-1024x1024.jpg" alt="Kimya Lab" class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-40 transition-opacity duration-300">
+                    <img src="{{ url_for('static', filename='images/istockphoto-990711646-1024x1024.jpg') }}" alt="Kimya Lab" class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-40 transition-opacity duration-300">
                     <div class="p-8 relative z-10 flex flex-col h-full justify-between min-h-[400px]">
                         <div>
                             <h3 class="text-3xl font-bold mb-3 text-white">Kimya</h3>
@@ -236,8 +231,7 @@
 
                 <!-- BİYOLOJİ LAB -->
                 <div class="group rounded-3xl overflow-hidden border border-slate-200 shadow-xl relative bg-slate-900">
-                    <!-- iStock Foto -->
-                    <img src="istockphoto-1089737754-1024x1024.jpg" alt="Biyoloji Lab" class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-40 transition-opacity duration-300">
+                    <img src="{{ url_for('static', filename='images/istockphoto-1089737754-1024x1024.jpg') }}" alt="Biyoloji Lab" class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-40 transition-opacity duration-300">
                     <div class="p-8 relative z-10 flex flex-col h-full justify-between min-h-[400px]">
                         <div>
                             <h3 class="text-3xl font-bold mb-3 text-white">Biyoloji</h3>
@@ -256,10 +250,10 @@
             <h4 class="text-sm font-bold text-slate-400 uppercase tracking-wider mb-8">Proje Ortakları ve Destekleyen Kurumlar</h4>
             <div class="flex flex-wrap justify-center items-center gap-8 md:gap-16 opacity-70 grayscale hover:grayscale-0 transition-all duration-500">
                 <!-- LOGOLAR BURADA -->
-                <img src="vclapps_erasmus_avrupa_birligi03.png" alt="Erasmus AB 1" class="h-16 md:h-20 object-contain">
-                <img src="logo_vclapps-reg-1.svg" alt="VCLapps Logo" class="h-12 md:h-16 object-contain">
-                <img src="öyadsavtek.jpeg" alt="ÖYAD SAVTEK Logo" class="h-16 md:h-20 object-contain rounded">
-                <img src="vclapps_erasmus_avrupa_birligi02.png" alt="Erasmus AB 2" class="h-16 md:h-20 object-contain">
+                <img src="{{ url_for('static', filename='images/vclapps_erasmus_avrupa_birligi03.png') }}" alt="Erasmus AB 1" class="h-16 md:h-20 object-contain">
+                <img src="{{ url_for('static', filename='images/logo_vclapps-reg-1.svg') }}" alt="VCLapps Logo" class="h-12 md:h-16 object-contain">
+                <img src="{{ url_for('static', filename='images/öyadsavtek.jpeg') }}" alt="ÖYAD SAVTEK Logo" class="h-16 md:h-20 object-contain rounded">
+                <img src="{{ url_for('static', filename='images/vclapps_erasmus_avrupa_birligi02.png') }}" alt="Erasmus AB 2" class="h-16 md:h-20 object-contain">
             </div>
         </div>
     </section>
@@ -270,7 +264,7 @@
             <div class="flex items-center gap-2">
                 <span class="font-black text-xl text-white">OYAK<span class="text-blue-500">DER</span></span>
             </div>
-            <p class="text-sm">© 2026 OYAKDER Eğitim Teknolojileri. Tüm hakları saklıdır.</p>
+            <p class="text-sm">© 2026 ÖYADSAVTEK Eğitim Teknolojileri. Tüm hakları saklıdır.</p>
         </div>
     </footer>
 
