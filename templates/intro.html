@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OYADSAVTEK | Giriş & Tanıtım</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .gradient-bg {
+            background: radial-gradient(circle at top right, #1e1b4b, #090514);
+        }
+        .gradient-text {
+            background: linear-gradient(to right, #3b82f6, #8b5cf6, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+    </style>
+</head>
+<body class="gradient-bg text-slate-100 min-h-screen flex flex-col justify-between overflow-x-hidden">
+
+    <!-- Header -->
+    <header class="max-w-7xl mx-auto px-6 w-full py-6 flex justify-between items-center relative z-10">
+        <div class="flex items-center gap-2">
+            <span class="font-black text-2xl tracking-tighter text-white">OYAD<span class="text-blue-500">SAVTEK</span></span>
+        </div>
+        <div>
+            {% if session.get('user') %}
+                <a href="{{ url_for('account') }}" class="glass-card hover:bg-white/10 px-5 py-2.5 rounded-full text-sm font-semibold transition border border-white/20">
+                    Hesabım ({{ session['user']['username'] }})
+                </a>
+            {% else %}
+                <a href="{{ url_for('login') }}" class="glass-card hover:bg-white/10 px-5 py-2.5 rounded-full text-sm font-semibold transition border border-white/20">
+                    Giriş Yap
+                </a>
+            {% endif %}
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow flex items-center justify-center px-4 py-12 relative">
+        <!-- Floating shapes for visual polish -->
+        <div class="absolute w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[120px] top-1/4 left-1/4 -z-10 animate-pulse"></div>
+        <div class="absolute w-[400px] h-[400px] bg-purple-600/10 rounded-full blur-[100px] bottom-1/4 right-1/4 -z-10"></div>
+
+        <div class="max-w-4xl text-center space-y-8 z-10">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/10 text-blue-300 font-semibold text-sm mb-4 border border-blue-500/20">
+                🚀 OYADSAVTEK Eğitim Portalı
+            </div>
+
+            <h1 class="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight leading-tight">
+                Geleceğin Fen Laboratuvarını <br>
+                <span class="gradient-text">Bugünden Keşfedin</span>
+            </h1>
+
+            <p class="text-lg sm:text-xl text-slate-400 max-w-2xl mx-auto font-light leading-relaxed">
+                Sanal Gerçeklik destekli MEB müfredatına %100 uyumlu fizik, kimya ve biyoloji deneyleri tek bir portalda. Aktif öğrenme deneyimini hemen başlatın.
+            </p>
+
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center pt-6">
+                {% if session.get('user') %}
+                    <a href="{{ url_for('home') }}" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-xl font-bold transition shadow-lg shadow-blue-500/30 transform hover:-translate-y-1">
+                        Sisteme Giriş Yap
+                    </a>
+                {% else %}
+                    <a href="{{ url_for('login') }}" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-xl font-bold transition shadow-lg shadow-blue-500/30 transform hover:-translate-y-1">
+                        Hemen Başla (Giriş)
+                    </a>
+                {% endif %}
+                <a href="#proje-hakkinda" class="w-full sm:w-auto glass-card hover:bg-white/10 text-white px-8 py-4 rounded-xl font-semibold transition border border-white/20">
+                    Daha Fazla Bilgi
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Details Section -->
+    <section id="proje-hakkinda" class="py-20 bg-black/40 border-t border-white/5">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="glass-card p-8 rounded-2xl">
+                    <div class="w-12 h-12 bg-blue-500/10 rounded-xl flex items-center justify-center text-blue-400 mb-6 text-2xl">🔬</div>
+                    <h3 class="text-xl font-bold mb-3 text-white">Sanal Gerçeklik</h3>
+                    <p class="text-slate-400 text-sm">Gözlüklerle veya masaüstü modda, öğrencileri tehlike ve maliyet olmadan deneylerin merkezine yerleştirin.</p>
+                </div>
+                <div class="glass-card p-8 rounded-2xl">
+                    <div class="w-12 h-12 bg-purple-500/10 rounded-xl flex items-center justify-center text-purple-400 mb-6 text-2xl">📚</div>
+                    <h3 class="text-xl font-bold mb-3 text-white">Müfredat Uyumu</h3>
+                    <p class="text-slate-400 text-sm">MEB kazanımlarına tam uyum sağlayan, ders kitabındaki konuları görselleştiren modüller.</p>
+                </div>
+                <div class="glass-card p-8 rounded-2xl">
+                    <div class="w-12 h-12 bg-pink-500/10 rounded-xl flex items-center justify-center text-pink-400 mb-6 text-2xl">👥</div>
+                    <h3 class="text-xl font-bold mb-3 text-white">Kullanıcı Yönetimi</h3>
+                    <p class="text-slate-400 text-sm">Admin yetkilendirmesiyle sınırsız yeni öğrenci hesabı ekleme ve kontrol paneli.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/5 py-8 bg-black/20 text-center text-sm text-slate-500">
+        <p>© 2026 ÖYADSAVTEK Eğitim Teknolojileri. Tüm hakları saklıdır.</p>
+    </footer>
+
+</body>
+</html>

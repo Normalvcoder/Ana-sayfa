@@ -8,60 +8,78 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: radial-gradient(circle at top right, #1e1b4b, #090514);
+        }
         .gradient-text {
-            background: linear-gradient(to right, #3b82f6, #8b5cf6);
+            background: linear-gradient(to right, #3b82f6, #8b5cf6, #ec4899);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
         .glass-nav {
-            background: rgba(255, 255, 255, 0.85);
+            background: rgba(9, 5, 20, 0.75);
             backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
         }
         .feature-card img { transition: transform 0.5s ease; }
         .feature-card:hover img { transform: scale(1.05); }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 antialiased overflow-x-hidden">
+<body class="text-slate-100 antialiased overflow-x-hidden">
 
     <!-- NAVİGASYON -->
     <nav class="fixed w-full z-50 glass-nav">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-20">
                 <div class="flex items-center gap-2">
-                    <span class="font-black text-2xl tracking-tighter text-slate-900">OYAD<span class="text-blue-600">SAVTEK</span></span>
+                    <a href="{{ url_for('intro') }}" class="font-black text-2xl tracking-tighter text-white">OYAD<span class="text-blue-500">SAVTEK</span></a>
                 </div>
-                <div class="hidden md:flex space-x-8">
-                    <a href="#vr-deneyimi" class="text-slate-600 hover:text-blue-600 font-medium transition">Neden VR?</a>
-                    <a href="#sorunlar" class="text-slate-600 hover:text-blue-600 font-medium transition">Çözümlerimiz</a>
-                    <a href="#laboratuvarlar" class="text-slate-600 hover:text-blue-600 font-medium transition">Laboratuvarlar</a>
-                </div>
-                <div>
-                    <a href="#laboratuvarlar" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-full font-semibold transition shadow-lg shadow-blue-200">
-                        Keşfetmeye Başla
-                    </a>
+                <div class="flex items-center gap-4">
+                    <div class="hidden md:flex space-x-8 mr-4">
+                        <a href="#vr-deneyimi" class="text-slate-300 hover:text-white font-medium transition">Neden VR?</a>
+                        <a href="#sorunlar" class="text-slate-300 hover:text-white font-medium transition">Çözümlerimiz</a>
+                        <a href="#laboratuvarlar" class="text-slate-300 hover:text-white font-medium transition">Laboratuvarlar</a>
+                    </div>
+                    {% if session.get('user') %}
+                        <a href="{{ url_for('account') }}" class="text-slate-300 hover:text-white font-semibold transition text-sm">
+                            Hesabım ({{ session['user']['username'] }})
+                        </a>
+                        <a href="{{ url_for('logout') }}" class="bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 px-4 py-2 rounded-full font-semibold transition text-sm">
+                            Çıkış Yap
+                        </a>
+                    {% else %}
+                        <a href="{{ url_for('login') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-full font-semibold transition shadow-lg shadow-blue-200">
+                            Giriş Yap
+                        </a>
+                    {% endif %}
                 </div>
             </div>
         </div>
     </nav>
 
     <!-- HERO (KAHRAMAN) BÖLÜMÜ -->
-    <section class="pt-32 pb-20 lg:pt-48 lg:pb-24 px-4 text-center">
+    <section class="pt-32 pb-20 lg:pt-48 lg:pb-24 px-4 text-center relative">
+        <div class="absolute w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[120px] top-1/4 left-1/4 -z-10 animate-pulse"></div>
         <div class="max-w-4xl mx-auto">
-            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 text-blue-700 font-semibold text-sm mb-6 border border-blue-100">
-                <span class="flex h-2 w-2 rounded-full bg-blue-600 animate-pulse"></span>
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/10 text-blue-300 font-semibold text-sm mb-6 border border-blue-500/20">
+                <span class="flex h-2 w-2 rounded-full bg-blue-500 animate-pulse"></span>
                 Pasif Öğrenmeden Aktif Deneyime
             </div>
-            <h1 class="text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight mb-6 text-slate-900">
+            <h1 class="text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight mb-6 text-white">
                 Geleceğin <span class="gradient-text">Fen Laboratuvarı</span>
             </h1>
-            <p class="text-xl md:text-2xl text-slate-600 mb-10 font-light max-w-3xl mx-auto">
+            <p class="text-xl md:text-2xl text-slate-400 mb-10 font-light max-w-3xl mx-auto">
                 Labınız artık sınıfınızın içinde. Güvenli, sınırsız ve herkes için eşit bilimsel deneyim.
             </p>
             
             <!-- Ana Video / Demo Alanı -->
-            <div class="relative max-w-4xl mx-auto rounded-2xl overflow-hidden shadow-2xl border-4 border-white bg-slate-900 group">
+            <div class="relative max-w-4xl mx-auto rounded-2xl overflow-hidden shadow-2xl border-4 border-white/5 bg-slate-900 group">
                 <div class="absolute top-4 left-4 z-10 bg-black/60 backdrop-blur-md text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2">
                     <span class="w-3 h-3 rounded-full bg-red-500"></span>
                     Sınıfınıza Sığan Lab - Demo
@@ -76,20 +94,20 @@
     </section>
 
     <!-- MEB MÜFREDAT UYUMU -->
-    <section class="bg-white border-y border-slate-200 py-8">
+    <section class="bg-white/5 border-y border-white/10 py-8">
         <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-center gap-6 text-center md:text-left">
-            <div class="bg-blue-100 text-blue-600 p-3 rounded-full">
+            <div class="bg-blue-500/10 text-blue-400 p-3 rounded-full">
                 <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
             </div>
             <div>
-                <h3 class="text-xl font-bold text-slate-800">MEB Müfredatına %100 Uyumlu</h3>
-                <p class="text-slate-600 text-sm">Deneylerimiz MEB kazanımlarına göre özel olarak tasarlanmıştır.</p>
+                <h3 class="text-xl font-bold text-slate-200">MEB Müfredatına %100 Uyumlu</h3>
+                <p class="text-slate-400 text-sm">Deneylerimiz MEB kazanımlarına göre özel olarak tasarlanmıştır.</p>
             </div>
         </div>
     </section>
 
     <!-- VR ÖZELLİKLERİ VE GEMINI GÖRSELLERİ GALERİSİ -->
-    <section id="vr-deneyimi" class="py-24 bg-slate-900 text-white">
+    <section id="vr-deneyimi" class="py-24 bg-transparent text-white">
         <div class="max-w-7xl mx-auto px-4">
             <div class="text-center mb-16">
                 <h2 class="text-3xl md:text-4xl font-bold mb-4">Sanal Gerçeklik ile Eğitimin Yeni Boyutu</h2>
@@ -98,36 +116,36 @@
 
             <div class="grid md:grid-cols-2 gap-8">
                 <!-- Özellik 1 -->
-                <div class="feature-card relative rounded-2xl overflow-hidden bg-slate-800 aspect-video group">
+                <div class="feature-card relative rounded-2xl overflow-hidden glass-card aspect-video group">
                     <img src="{{ url_for('static', filename='images/Gemini_Generated_Image_gkshoxgkshoxgksh.png') }}" alt="Güvenli ve Modern Eğitim" class="w-full h-full object-cover opacity-60 group-hover:opacity-40">
-                    <div class="absolute inset-0 p-8 flex flex-col justify-end bg-gradient-to-t from-slate-900 via-slate-900/60 to-transparent">
+                    <div class="absolute inset-0 p-8 flex flex-col justify-end bg-gradient-to-t from-[#090514] via-[#090514]/60 to-transparent">
                         <h3 class="text-2xl font-bold mb-2">Güvenli ve Modern Eğitim</h3>
                         <p class="text-slate-300">Öğrenciler modern, temiz bir sınıfta, en son teknoloji VR gözlüklerle, dış dünyadan kopmadan tamamen odaklanmış bir şekilde eğitim görüyor.</p>
                     </div>
                 </div>
 
                 <!-- Özellik 2 -->
-                <div class="feature-card relative rounded-2xl overflow-hidden bg-slate-800 aspect-video group">
+                <div class="feature-card relative rounded-2xl overflow-hidden glass-card aspect-video group">
                     <img src="{{ url_for('static', filename='images/Gemini_Generated_Image_sh4xscsh4xscsh4x.png') }}" alt="Sınıfınıza Sığan Laboratuvar" class="w-full h-full object-cover opacity-60 group-hover:opacity-40">
-                    <div class="absolute inset-0 p-8 flex flex-col justify-end bg-gradient-to-t from-slate-900 via-slate-900/60 to-transparent">
+                    <div class="absolute inset-0 p-8 flex flex-col justify-end bg-gradient-to-t from-[#090514] via-[#090514]/60 to-transparent">
                         <h3 class="text-2xl font-bold mb-2">Sınıfınıza Sığan Laboratuvar</h3>
                         <p class="text-slate-300">Sınıf ortamından kopmadan; görünmez fizik vektörlerini, kimyasal moleküler yapıları ve biyolojik sistemleri anında 3D olarak deneyimliyorlar.</p>
                     </div>
                 </div>
 
                 <!-- Özellik 3 -->
-                <div class="feature-card relative rounded-2xl overflow-hidden bg-slate-800 aspect-video group">
+                <div class="feature-card relative rounded-2xl overflow-hidden glass-card aspect-video group">
                     <img src="{{ url_for('static', filename='images/Gemini_Generated_Image_uml47quml47quml4.png') }}" alt="Tehlikesiz Deneyimler" class="w-full h-full object-cover opacity-60 group-hover:opacity-40">
-                    <div class="absolute inset-0 p-8 flex flex-col justify-end bg-gradient-to-t from-slate-900 via-slate-900/60 to-transparent">
+                    <div class="absolute inset-0 p-8 flex flex-col justify-end bg-gradient-to-t from-[#090514] via-[#090514]/60 to-transparent">
                         <h3 class="text-2xl font-bold mb-2">Tehlikesiz Deneyimler</h3>
                         <p class="text-slate-300">Zehirli kimyasal reaksiyonlar, elektrik akımları veya biyolojik örnekler gibi tehlikeli olabilecek süreçler, sıfır riskle sanal ortamda gözlemleniyor.</p>
                     </div>
                 </div>
 
                 <!-- Özellik 4 -->
-                <div class="feature-card relative rounded-2xl overflow-hidden bg-slate-800 aspect-video group">
+                <div class="feature-card relative rounded-2xl overflow-hidden glass-card aspect-video group">
                     <img src="{{ url_for('static', filename='images/Gemini_Generated_Image_unrucyunrucyunru.png') }}" alt="Veri ve Kontrol" class="w-full h-full object-cover opacity-60 group-hover:opacity-40">
-                    <div class="absolute inset-0 p-8 flex flex-col justify-end bg-gradient-to-t from-slate-900 via-slate-900/60 to-transparent">
+                    <div class="absolute inset-0 p-8 flex flex-col justify-end bg-gradient-to-t from-[#090514] via-[#090514]/60 to-transparent">
                         <h3 class="text-2xl font-bold mb-2">Kusursuz Veri ve Kontrol</h3>
                         <p class="text-slate-300">Türkçe veri tabloları ve reaksiyon formülleri havada belirir. "İdeal fizik" ortamı sayesinde kesin veri takibi ve anlık parametre kontrolü sağlanır.</p>
                     </div>
@@ -137,88 +155,89 @@
     </section>
 
     <!-- SORUNLAR VE ÇÖZÜMLER -->
-    <section id="sorunlar" class="py-24 bg-slate-50">
+    <section id="sorunlar" class="py-24 bg-transparent">
         <div class="max-w-7xl mx-auto px-4">
             <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-4">Eski Sorunlara, Yeni Boyut Çözümler</h2>
-                <p class="text-lg text-slate-600">Geleneksel laboratuvarların engellerini Sanal Gerçeklik ile kaldırıyoruz.</p>
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Eski Sorunlara, Yeni Boyut Çözümler</h2>
+                <p class="text-lg text-slate-400">Geleneksel laboratuvarların engellerini Sanal Gerçeklik ile kaldırıyoruz.</p>
             </div>
 
             <div class="grid md:grid-cols-2 gap-8">
                 <!-- 1. Yüksek Lab Maliyeti -->
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col group hover:shadow-md transition-shadow duration-300">
-                    <div class="overflow-hidden rounded-xl mb-6 h-56 bg-slate-100">
-                        <img src="{{ url_for('static', filename='images/Yüksek Lab Maliyeti.jpg') }}" alt="Yüksek Maliyet" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                <div class="glass-card p-6 rounded-2xl flex flex-col group hover:shadow-md transition-shadow duration-300">
+                    <div class="overflow-hidden rounded-xl mb-6 h-56 bg-slate-900">
+                        <img src="{{ url_for('static', filename='images/Yüksek Lab Maliyeti.png') }}" alt="Yüksek Maliyet" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-80">
                     </div>
-                    <h4 class="text-lg font-bold text-slate-800 mb-2 flex items-center gap-2"><span class="text-red-500">❌</span> Yüksek Lab Maliyeti & Sınırlı Malzeme</h4>
-                    <p class="text-slate-500 text-sm mb-6">Sürekli tükenen malzemeler, bozulan pahalı ekipmanlar (osiloskop, dinamometre) yüzünden deneyler yapılamıyor.</p>
-                    <div class="bg-blue-50 p-3 rounded-lg border border-blue-100 mt-auto">
-                        <p class="text-blue-800 text-sm font-semibold">✅ Sıfır Sarf Malzemesi Gideri, Sınırsız Simülasyon</p>
+                    <h4 class="text-lg font-bold text-slate-200 mb-2 flex items-center gap-2"><span class="text-red-500">❌</span> Yüksek Lab Maliyeti & Sınırlı Malzeme</h4>
+                    <p class="text-slate-400 text-sm mb-6">Sürekli tükenen malzemeler, bozulan pahalı ekipmanlar (osiloskop, dinamometre) yüzünden deneyler yapılamıyor.</p>
+                    <div class="bg-blue-500/10 p-3 rounded-lg border border-blue-500/20 mt-auto">
+                        <p class="text-blue-300 text-sm font-semibold">✅ Sıfır Sarf Malzemesi Gideri, Sınırsız Simülasyon</p>
                     </div>
                 </div>
 
                 <!-- 2. Güvenlik Endişesi -->
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col group hover:shadow-md transition-shadow duration-300">
-                    <div class="overflow-hidden rounded-xl mb-6 h-56 bg-slate-100">
-                        <img src="{{ url_for('static', filename='images/Güvenlik Endişeleri.jpg') }}" alt="Güvenlik Endişesi" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                <div class="glass-card p-6 rounded-2xl flex flex-col group hover:shadow-md transition-shadow duration-300">
+                    <div class="overflow-hidden rounded-xl mb-6 h-56 bg-slate-900">
+                        <img src="{{ url_for('static', filename='images/Güvenlik Endişeleri.jpg') }}" alt="Güvenlik Endişesi" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-80">
                     </div>
-                    <h4 class="text-lg font-bold text-slate-800 mb-2 flex items-center gap-2"><span class="text-red-500">❌</span> Güvenlik Endişesi</h4>
-                    <p class="text-slate-500 text-sm mb-6">Zehirli gazlar, asit-baz yanıkları, UV ışınları ve kısa devre riskleri yüzünden tehlikeli reaksiyonlar sınıflarda gösterilemiyor.</p>
-                    <div class="bg-blue-50 p-3 rounded-lg border border-blue-100 mt-auto">
-                        <p class="text-blue-800 text-sm font-semibold">✅ Kimya Sınıfında Patlama? Artık Sorun Değil. %100 Güvenli.</p>
+                    <h4 class="text-lg font-bold text-slate-200 mb-2 flex items-center gap-2"><span class="text-red-500">❌</span> Güvenlik Endişesi</h4>
+                    <p class="text-slate-400 text-sm mb-6">Zehirli gazlar, asit-baz yanıkları, UV ışınları ve kısa devre riskleri yüzünden tehlikeli reaksiyonlar sınıflarda gösterilemiyor.</p>
+                    <div class="bg-blue-500/10 p-3 rounded-lg border border-blue-500/20 mt-auto">
+                        <p class="text-blue-300 text-sm font-semibold">✅ Kimya Sınıfında Patlama? Artık Sorun Değil. %100 Güvenli.</p>
                     </div>
                 </div>
 
                 <!-- 3. Zaman Yetersizliği -->
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col group hover:shadow-md transition-shadow duration-300">
-                    <div class="overflow-hidden rounded-xl mb-6 h-56 bg-slate-100">
-                        <img src="{{ url_for('static', filename='images/Zaman Yetersizliği.jpg') }}" alt="Zaman Yetersizliği" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                <div class="glass-card p-6 rounded-2xl flex flex-col group hover:shadow-md transition-shadow duration-300">
+                    <div class="overflow-hidden rounded-xl mb-6 h-56 bg-slate-900">
+                        <img src="{{ url_for('static', filename='images/Zaman Yetersizliği.png') }}" alt="Zaman Yetersizliği" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-80">
                     </div>
-                    <h4 class="text-lg font-bold text-slate-800 mb-2 flex items-center gap-2"><span class="text-red-500">❌</span> Zaman Yetersizliği & Kalitesiz Görüntü</h4>
-                    <p class="text-slate-500 text-sm mb-6">Kurulum ve temizlik dersi bitiriyor. Ayrıca mikroskoplar yetersiz, DNA/Mitoz gibi soyut süreçler anlaşılamıyor.</p>
-                    <div class="bg-blue-50 p-3 rounded-lg border border-blue-100 mt-auto">
-                        <p class="text-blue-800 text-sm font-semibold">✅ Kurulum Yok. Hücrenin İçine "Gir", Adım Adım İzle.</p>
+                    <h4 class="text-lg font-bold text-slate-200 mb-2 flex items-center gap-2"><span class="text-red-500">❌</span> Zaman Yetersizliği & Kalitesiz Görüntü</h4>
+                    <p class="text-slate-400 text-sm mb-6">Kurulum ve temizlik dersi bitiriyor. Ayrıca mikroskoplar yetersiz, DNA/Mitoz gibi soyut süreçler anlaşılamıyor.</p>
+                    <div class="bg-blue-500/10 p-3 rounded-lg border border-blue-500/20 mt-auto">
+                        <p class="text-blue-300 text-sm font-semibold">✅ Kurulum Yok. Hücrenin İçine "Gir", Adım Adım İzle.</p>
                     </div>
                 </div>
 
                 <!-- 4. İmkansız Deneyler -->
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col group hover:shadow-md transition-shadow duration-300">
-                    <div class="overflow-hidden rounded-xl mb-6 h-56 bg-slate-100">
-                        <img src="{{ url_for('static', filename='images/İmkansız deneyler.jpg') }}" alt="İmkansız Deneyler" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                <div class="glass-card p-6 rounded-2xl flex flex-col group hover:shadow-md transition-shadow duration-300">
+                    <div class="overflow-hidden rounded-xl mb-6 h-56 bg-slate-900">
+                        <img src="{{ url_for('static', filename='images/İmkansız deneyler.jpg') }}" alt="İmkansız Deneyler" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-80">
                     </div>
-                    <h4 class="text-lg font-bold text-slate-800 mb-2 flex items-center gap-2"><span class="text-red-500">❌</span> İmkansız Deneyler & Eşitsizlik</h4>
-                    <p class="text-slate-500 text-sm mb-6">Uzay boşluğunda serbest düşüş, hayvan diseksiyonu (etik sorunlar) veya ışık dalgalarını elle tutmak gerçekte imkansızdır.</p>
-                    <div class="bg-blue-50 p-3 rounded-lg border border-blue-100 mt-auto">
-                        <p class="text-blue-800 text-sm font-semibold">✅ Her Öğrenci İçin Ön Sırada, Fiziksel Sınırların Ötesinde Deneyim.</p>
+                    <h4 class="text-lg font-bold text-slate-200 mb-2 flex items-center gap-2"><span class="text-red-500">❌</span> İmkansız Deneyler & Eşitsizlik</h4>
+                    <p class="text-slate-400 text-sm mb-6">Uzay boşluğunda serbest düşüş, hayvan diseksiyonu (etik sorunlar) veya ışık dalgalarını elle tutmak gerçekte imkansızdır.</p>
+                    <div class="bg-blue-500/10 p-3 rounded-lg border border-blue-500/20 mt-auto">
+                        <p class="text-blue-300 text-sm font-semibold">✅ Her Öğrenci İçin Ön Sırada, Fiziksel Sınırların Ötesinde Deneyim.</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
+
     <!-- 3 BRANŞ (İSTOCK FOTOLARI İLE) -->
-    <section id="laboratuvarlar" class="py-24 bg-white">
+    <section id="laboratuvarlar" class="py-24 bg-transparent">
         <div class="max-w-7xl mx-auto px-4">
             <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-5xl font-bold mb-4 text-slate-900">Sanal Laboratuvarlara Giriş</h2>
-                <p class="text-slate-600 text-lg">Keşfetmek istediğiniz branşı seçin.</p>
+                <h2 class="text-3xl md:text-5xl font-bold mb-4 text-white">Sanal Laboratuvarlara Giriş</h2>
+                <p class="text-slate-400 text-lg">Keşfetmek istediğiniz branşı seçin.</p>
             </div>
 
             <div class="grid md:grid-cols-3 gap-8">
                 <!-- FİZİK LAB -->
-                <div class="group rounded-3xl overflow-hidden border border-slate-200 shadow-xl relative bg-slate-900">
+                <div class="group rounded-3xl overflow-hidden border border-white/10 shadow-xl relative bg-slate-900">
                     <img src="{{ url_for('static', filename='images/istockphoto-664198918-1024x1024.jpg') }}" alt="Fizik Lab" class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-40 transition-opacity duration-300">
                     <div class="p-8 relative z-10 flex flex-col h-full justify-between min-h-[400px]">
                         <div>
                             <h3 class="text-3xl font-bold mb-3 text-white">Fizik</h3>
                             <p class="text-slate-200 mb-4 font-medium">Uzay boşluğunda serbest düşüş, devre yakma korkusu olmadan sonsuz simülasyon ve görünmez dalga boylarını elle tutma imkanı.</p>
                         </div>
-                        <a href="vrfiziklab.html" class="inline-block w-full text-center bg-blue-600 hover:bg-blue-500 text-white py-3 rounded-xl font-bold transition shadow-lg shadow-blue-500/30">Fizik Panosuna Git &rarr;</a>
+                        <a href="{{ url_for('fizik_lab') }}" class="inline-block w-full text-center bg-blue-600 hover:bg-blue-500 text-white py-3 rounded-xl font-bold transition shadow-lg shadow-blue-500/30">Fizik Panosuna Git &rarr;</a>
                     </div>
                 </div>
 
                 <!-- KİMYA LAB -->
-                <div class="group rounded-3xl overflow-hidden border border-slate-200 shadow-xl relative bg-slate-900">
+                <div class="group rounded-3xl overflow-hidden border border-white/10 shadow-xl relative bg-slate-900">
                     <img src="{{ url_for('static', filename='images/istockphoto-990711646-1024x1024.jpg') }}" alt="Kimya Lab" class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-40 transition-opacity duration-300">
                     <div class="p-8 relative z-10 flex flex-col h-full justify-between min-h-[400px]">
                         <div>
@@ -230,7 +249,7 @@
                 </div>
 
                 <!-- BİYOLOJİ LAB -->
-                <div class="group rounded-3xl overflow-hidden border border-slate-200 shadow-xl relative bg-slate-900">
+                <div class="group rounded-3xl overflow-hidden border border-white/10 shadow-xl relative bg-slate-900">
                     <img src="{{ url_for('static', filename='images/istockphoto-1089737754-1024x1024.jpg') }}" alt="Biyoloji Lab" class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-40 transition-opacity duration-300">
                     <div class="p-8 relative z-10 flex flex-col h-full justify-between min-h-[400px]">
                         <div>
@@ -245,9 +264,9 @@
     </section>
 
     <!-- DESTEKLEYENLER / LOGOLAR BÖLÜMÜ -->
-    <section class="py-16 bg-slate-100 border-t border-slate-200">
+    <section class="py-16 bg-black/40 border-t border-white/5">
         <div class="max-w-7xl mx-auto px-4 text-center">
-            <h4 class="text-sm font-bold text-slate-400 uppercase tracking-wider mb-8">Proje Ortakları ve Destekleyen Kurumlar</h4>
+            <h4 class="text-sm font-bold text-slate-500 uppercase tracking-wider mb-8">Proje Ortakları ve Destekleyen Kurumlar</h4>
             <div class="flex flex-wrap justify-center items-center gap-8 md:gap-16 opacity-70 grayscale hover:grayscale-0 transition-all duration-500">
                 <!-- LOGOLAR BURADA -->
                 <img src="{{ url_for('static', filename='images/vclapps_erasmus_avrupa_birligi03.png') }}" alt="Erasmus AB 1" class="h-16 md:h-20 object-contain">
@@ -259,7 +278,7 @@
     </section>
 
     <!-- FOOTER -->
-    <footer class="bg-slate-900 text-slate-400 py-12 border-t border-slate-800">
+    <footer class="bg-black/60 text-slate-400 py-12 border-t border-white/5">
         <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-6">
             <div class="flex items-center gap-2">
                 <span class="font-black text-xl text-white">OYAK<span class="text-blue-500">DER</span></span>
