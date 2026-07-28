@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MEB Müfredatı Fizik Deneyleri & VR Laboratuvarı Panosu</title>
+    <title>MEB Müfredatı Fizik Deneyleri & VR Laboratuvarı (Test Ortamı)</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         * {
             box-sizing: border-box;
@@ -12,44 +15,107 @@
         }
 
         body {
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background-color: #f8fafc;
-            color: #0f172a;
-            line-height: 1.6;
-            display: flex;
+            font-family: 'Inter', sans-serif;
+            background: radial-gradient(circle at top right, #1e1b4b, #090514);
+            color: #f8fafc;
             min-height: 100vh;
+            display: flex;
+            overflow-x: hidden;
         }
 
-        /* Kenar Çubuğu (Sidebar) Tasarımı */
+        /* KEYFRAME ANIMATIONS */
+        @keyframes morphGlow {
+            0%, 100% {
+                border-color: rgba(56, 189, 248, 0.3);
+                box-shadow: 0 10px 30px -10px rgba(56, 189, 248, 0.2);
+            }
+            50% {
+                border-color: rgba(139, 92, 246, 0.5);
+                box-shadow: 0 15px 35px -10px rgba(139, 92, 246, 0.35);
+            }
+        }
+
+        @keyframes fadeInPush {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.97);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .anim-fade-push {
+            animation: fadeInPush 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .glass-card:hover {
+            border-color: rgba(56, 189, 248, 0.4);
+            transform: translateY(-4px);
+        }
+
+        /* Kenar Çubuğu (Sidebar) */
         .sidebar {
-            width: 320px;
-            background-color: #1e293b;
-            color: #f8fafc;
-            padding: 2rem 1.5rem;
+            width: 370px;
+            background-color: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 2rem 1.25rem;
             display: flex;
             flex-direction: column;
-            border-right: 1px solid #334155;
             position: fixed;
             height: 100vh;
             overflow-y: auto;
+            z-index: 40;
         }
 
         .sidebar-header {
-            margin-bottom: 2.5rem;
-            border-bottom: 1px solid #334155;
-            padding-bottom: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 1.25rem;
         }
 
         .sidebar-header h1 {
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: #38bdf8;
-            margin-bottom: 0.5rem;
+            font-size: 1.35rem;
+            font-weight: 800;
+            background: linear-gradient(90deg, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.35rem;
         }
 
-        .sidebar-header p {
-            font-size: 0.85rem;
+        /* Grade Filter Buttons */
+        .grade-btn {
+            font-size: 0.78rem;
+            font-weight: 700;
+            padding: 0.45rem 0.75rem;
+            border-radius: 9999px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             color: #94a3b8;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .grade-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            transform: scale(1.04);
+        }
+
+        .grade-btn.active {
+            background: linear-gradient(135deg, #0284c7, #6366f1);
+            color: #ffffff;
+            border-color: transparent;
+            box-shadow: 0 4px 15px rgba(2, 132, 199, 0.35);
         }
 
         .nav-list {
@@ -60,234 +126,197 @@
         }
 
         .nav-item {
-            padding: 1rem;
-            background-color: #334155;
-            border-radius: 8px;
+            padding: 0.9rem 1rem;
+            background-color: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 14px;
             cursor: pointer;
-            transition: all 0.2s ease;
-            border-left: 4px solid transparent;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .nav-item:hover {
-            background-color: #475569;
+            background-color: rgba(255, 255, 255, 0.08);
             transform: translateX(4px);
+            border-color: rgba(56, 189, 248, 0.3);
         }
 
         .nav-item.active {
-            background-color: #0f766e;
-            border-left-color: #2dd4bf;
-        }
-
-        .nav-item h3 {
-            font-size: 0.95rem;
-            font-weight: 600;
-            margin-bottom: 0.25rem;
-        }
-
-        .nav-item span {
-            font-size: 0.75rem;
-            color: #cbd5e1;
-            background-color: rgba(255, 255, 255, 0.1);
-            padding: 0.2rem 0.5rem;
-            border-radius: 4px;
-            display: inline-block;
+            background: linear-gradient(135deg, rgba(14, 116, 144, 0.4), rgba(67, 56, 202, 0.4));
+            border-left: 4px solid #38bdf8;
+            border-color: rgba(56, 189, 248, 0.5);
+            box-shadow: 0 10px 25px -5px rgba(56, 189, 248, 0.2);
         }
 
         .user-status-container {
             margin-top: auto;
             padding-top: 1.5rem;
-            border-top: 1px solid #334155;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
             display: flex;
             flex-direction: column;
             gap: 0.75rem;
         }
 
         .back-btn {
-            display: block;
+            display: inline-block;
             text-align: center;
-            background-color: #0284c7;
-            color: white;
+            padding: 0.65rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            color: #cbd5e1;
             text-decoration: none;
-            padding: 0.75rem;
-            border-radius: 8px;
+            border-radius: 10px;
+            font-size: 0.85rem;
             font-weight: 600;
-            font-size: 0.9rem;
-            transition: all 0.2s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.25s ease;
         }
 
         .back-btn:hover {
-            background-color: #0369a1;
+            background: rgba(255, 255, 255, 0.12);
+            color: #ffffff;
             transform: translateY(-2px);
         }
 
-        /* Ana İçerik Alanı */
+        /* Main Content */
         .main-content {
-            margin-left: 320px;
+            margin-left: 370px;
             flex: 1;
-            padding: 3rem;
+            padding: 2.5rem;
             max-width: 1000px;
         }
 
         .welcome-panel {
-            background: linear-gradient(135deg, #0f766e, #0d9488);
-            color: white;
-            padding: 2.5rem;
-            border-radius: 16px;
-            margin-bottom: 2.5rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(16px);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
         }
 
-        .welcome-panel h2 {
-            font-size: 1.8rem;
-            margin-bottom: 0.75rem;
-        }
-
-        .welcome-panel p {
-            color: #ccfbf1;
-            max-width: 700px;
-        }
-
-        /* Deney Detay Kartı */
         .detail-card {
-            background-color: white;
-            border-radius: 16px;
-            padding: 2.5rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            border: 1px solid #e2e8f0;
             display: none;
-            animation: fadeIn 0.4s ease;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 2.25rem;
+            margin-bottom: 2rem;
+            animation: morphGlow 4s infinite alternate;
         }
 
         .detail-card.active {
             display: block;
+            animation: fadeInPush 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid #f1f5f9;
-            padding-bottom: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .card-title-area h2 {
-            font-size: 1.6rem;
-            color: #1e293b;
+        .topic-badge {
+            background: rgba(56, 189, 248, 0.1);
+            color: #38bdf8;
+            border: 1px solid rgba(56, 189, 248, 0.25);
+            font-size: 0.75rem;
             font-weight: 700;
-        }
-
-        .grade-badge {
-            background-color: #e0f2fe;
-            color: #0369a1;
-            padding: 0.4rem 1rem;
-            border-radius: 20px;
-            font-weight: 600;
-            font-size: 0.85rem;
-        }
-
-        .section-title {
-            font-size: 1.1rem;
-            color: #475569;
-            font-weight: 600;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            display: inline-block;
             margin-bottom: 0.75rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .content-box {
-            background-color: #f8fafc;
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-            border-left: 4px solid #94a3b8;
-            font-size: 1.05rem;
-            color: #334155;
         }
 
         .vr-box {
-            background-color: #f0fdfa;
-            border-radius: 12px;
-            padding: 1.5rem;
-            border-left: 4px solid #0d9488;
-            font-size: 1.05rem;
-            color: #115e59;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Responsive Tasarım */
-        @media (max-width: 768px) {
-            body {
-                flex-direction: column;
-            }
-            .sidebar {
-                width: 100%;
-                height: auto;
-                position: relative;
-                padding: 1.5rem;
-            }
-            .main-content {
-                margin-left: 0;
-                padding: 1.5rem;
-            }
-        }
-        /* Video Konteyner Tasarımı */
-        .video-container {
-            width: 100%;
-            margin-top: 2rem;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
-            background-color: #000;
-            border: 2px solid #2dd4bf;
-        }
-
-        .video-container video {
-            width: 100%;
-            height: auto;
-            display: block;
+            background: linear-gradient(135deg, rgba(14, 116, 144, 0.15), rgba(79, 70, 229, 0.15));
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            border-radius: 16px;
+            padding: 1.25rem 1.5rem;
+            color: #e2e8f0;
+            font-size: 0.95rem;
+            margin-top: 1rem;
         }
     </style>
 </head>
 <body>
 
-    <!-- Sol Menü -->
+    <!-- KENAR ÇUBUĞU (SIDEBAR) -->
     <div class="sidebar">
         <div class="sidebar-header">
-            <h1>VR Fizik Laboratuvarı</h1>
-            <p>MEB Müfredat Uyumlu Deney Pano Uygulaması</p>
+            <h1>🧪 MEB Fizik Deneyleri</h1>
+            <p class="text-xs text-slate-400">Sınıf Seviyesine ve Konulara Göre Deney Panosu</p>
         </div>
-        <ul class="nav-list">
-            <li class="nav-item active" onclick="showExperiment(1, this)">
-                <h3>1. Sürtünme Kuvveti</h3>
-                <span>9. Sınıf</span>
+
+        <!-- SINIF (GRADE) FİLTRELERİ -->
+        <div class="mb-5">
+            <div class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2.5">Sınıf Seviyesi Seçin</div>
+            <div class="flex flex-wrap gap-1.5" id="gradeFilterContainer">
+                <button class="grade-btn active" onclick="filterByGrade('all', this)">Tümü</button>
+                <button class="grade-btn" onclick="filterByGrade('9', this)">9. Sınıf</button>
+                <button class="grade-btn" onclick="filterByGrade('10', this)">10. Sınıf</button>
+                <button class="grade-btn" onclick="filterByGrade('11', this)">11. Sınıf</button>
+                <button class="grade-btn" onclick="filterByGrade('12', this)">12. Sınıf</button>
+            </div>
+        </div>
+
+        <!-- DENEY LİSTESİ -->
+        <div class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Deneyler</div>
+        <ul class="nav-list" id="expNavList">
+            
+            <!-- 9. SINIF DENEYLERİ -->
+            <li class="nav-item active" data-grade="9" data-exp-id="exp-1" onclick="showExperiment('exp-1', this)">
+                <div class="text-xs font-bold text-blue-400 mb-0.5">Konu: Fizik Bilimine Giriş</div>
+                <h3 class="text-sm font-bold text-white">1. Ölçme ve Hata Deneyi</h3>
+                <span class="text-xs bg-blue-500/20 text-blue-300 px-2 py-0.5 rounded mt-1 inline-block">9. Sınıf</span>
             </li>
-            <li class="nav-item" onclick="showExperiment(2, this)">
-                <h3>2. Eğik Düzlemde İvme</h3>
-                <span>11. Sınıf</span>
+
+            <li class="nav-item" data-grade="9" data-exp-id="exp-2" onclick="showExperiment('exp-2', this)">
+                <div class="text-xs font-bold text-blue-400 mb-0.5">Konu: Madde ve Özellikleri</div>
+                <h3 class="text-sm font-bold text-white">2. Kılcallık ve Özkütle Keşfi</h3>
+                <span class="text-xs bg-blue-500/20 text-blue-300 px-2 py-0.5 rounded mt-1 inline-block">9. Sınıf</span>
             </li>
-            <li class="nav-item" onclick="showExperiment(3, this)">
-                <h3>3. Ohm Yasası & Reosta</h3>
-                <span>10. Sınıf</span>
+
+            <li class="nav-item" data-grade="9" data-exp-id="exp-3" onclick="showExperiment('exp-3', this)">
+                <div class="text-xs font-bold text-blue-400 mb-0.5">Konu: Enerji</div>
+                <h3 class="text-sm font-bold text-white">3. Enerji Dönüşümü (Kaykay Parkı)</h3>
+                <span class="text-xs bg-blue-500/20 text-blue-300 px-2 py-0.5 rounded mt-1 inline-block">9. Sınıf</span>
             </li>
-            <li class="nav-item" onclick="showExperiment(4, this)">
-                <h3>4. Merkezi Çarpışmalar</h3>
-                <span>11. Sınıf</span>
+
+            <!-- 10. SINIF DENEYLERİ -->
+            <li class="nav-item" data-grade="10" data-exp-id="exp-4" onclick="showExperiment('exp-4', this)">
+                <div class="text-xs font-bold text-purple-400 mb-0.5">Konu: Elektrik ve Manyetizma</div>
+                <h3 class="text-sm font-bold text-white">4. Sanal Elektrik Devresi & Manyetik Alan</h3>
+                <span class="text-xs bg-purple-500/20 text-purple-300 px-2 py-0.5 rounded mt-1 inline-block">10. Sınıf</span>
             </li>
-            <li class="nav-item" onclick="showExperiment(5, this)">
-                <h3>5. Manyetik Alan & Yük</h3>
-                <span>11. Sınıf</span>
+
+            <li class="nav-item" data-grade="10" data-exp-id="exp-5" onclick="showExperiment('exp-5', this)">
+                <div class="text-xs font-bold text-purple-400 mb-0.5">Konu: Optik</div>
+                <h3 class="text-sm font-bold text-white">5. Işık Kutusu ve Aynalar / Mercekler</h3>
+                <span class="text-xs bg-purple-500/20 text-purple-300 px-2 py-0.5 rounded mt-1 inline-block">10. Sınıf</span>
             </li>
-            <li class="nav-item" onclick="showExperiment(6, this)">
-                <h3>6. Fotodiyot & UV Işık</h3>
-                <span>12. Sınıf</span>
+
+            <!-- 11. SINIF DENEYLERİ -->
+            <li class="nav-item" data-grade="11" data-exp-id="exp-6" onclick="showExperiment('exp-6', this)">
+                <div class="text-xs font-bold text-emerald-400 mb-0.5">Konu: Kuvvet ve Hareket</div>
+                <h3 class="text-sm font-bold text-white">6. Çok Boyutlu Atışlar ve Çarpışmalar</h3>
+                <span class="text-xs bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded mt-1 inline-block">11. Sınıf</span>
             </li>
+
+            <li class="nav-item" data-grade="11" data-exp-id="exp-7" onclick="showExperiment('exp-7', this)">
+                <div class="text-xs font-bold text-emerald-400 mb-0.5">Konu: Elektromanyetizma</div>
+                <h3 class="text-sm font-bold text-white">7. 3D Elektriksel Alan Haritası</h3>
+                <span class="text-xs bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded mt-1 inline-block">11. Sınıf</span>
+            </li>
+
+            <!-- 12. SINIF DENEYLERİ -->
+            <li class="nav-item" data-grade="12" data-exp-id="exp-8" onclick="showExperiment('exp-8', this)">
+                <div class="text-xs font-bold text-amber-400 mb-0.5">Konu: Dalga Mekaniği</div>
+                <h3 class="text-sm font-bold text-white">8. Young Çift Yarıkta Girişim</h3>
+                <span class="text-xs bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded mt-1 inline-block">12. Sınıf</span>
+            </li>
+
+            <li class="nav-item" data-grade="12" data-exp-id="exp-9" onclick="showExperiment('exp-9', this)">
+                <div class="text-xs font-bold text-amber-400 mb-0.5">Konu: Modern Fizik & Atom</div>
+                <h3 class="text-sm font-bold text-white">9. Rutherford Saçılması & Fotoelektrik</h3>
+                <span class="text-xs bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded mt-1 inline-block">12. Sınıf</span>
+            </li>
+
         </ul>
+
         <div class="user-status-container">
             {% if session.get('user') %}
             <div style="font-size: 0.85rem; color: #94a3b8;">
@@ -300,145 +329,297 @@
         </div>
     </div>
 
-    <!-- Ana İçerik Alanı -->
+    <!-- ANA İÇERİK ALANI -->
     <div class="main-content">
-        <div class="welcome-panel">
-            <h2>Fizik Deneyleri Keşif Paneline Hoş Geldiniz</h2>
-            <p>Sol taraftaki menüyü kullanarak 6 farklı fizik deneyinin MEB müfredatındaki yerini, konusunu ve geleneksel sınıf ortamlarına kıyasla VR (Sanal Gerçeklik) teknolojisinde işlenmesinin getirdiği devrimsel avantajları inceleyebilirsiniz.</p>
-            
-            <div class="video-container">
-                <video controls poster="video_kapak_resmi.jpg">
-                    <source src="proje_tanitim.mp4" type="video/mp4">
-                    Tarayıcınız bu videoyu oynatmayı desteklemiyor.
-                </video>
+        <div class="welcome-panel anim-fade-push">
+            <div class="flex items-center gap-3 mb-2">
+                <span class="text-2xl">⚡</span>
+                <h2 class="text-2xl font-extrabold text-white">Fizik Deneyleri Keşif Panosu (Test Ortamı)</h2>
+            </div>
+            <p class="text-slate-400 text-sm leading-relaxed">
+                Deneyler önce <strong>Sınıf Seviyesine (9, 10, 11, 12. Sınıf)</strong>, ardından <strong>Müfredat Konularına</strong> göre kategorize edilmiştir. Sol taraftaki sınıf filtrelerini kullanarak deneyleri inceleyebilirsiniz.
+            </p>
+        </div>
+
+        <!-- 9. SINIF DENEY KARTLARI -->
+        
+        <!-- DENEY 1 -->
+        <div id="exp-1" class="detail-card active">
+            <div class="flex justify-between items-start mb-4 border-b border-white/10 pb-4">
+                <div>
+                    <span class="topic-badge">Konu: Fizik Bilimine Giriş</span>
+                    <h2 class="text-2xl font-extrabold text-white">Ölçme ve Hata Deneyi</h2>
+                </div>
+                <span class="px-3 py-1 bg-blue-500/20 text-blue-300 border border-blue-500/30 text-xs font-bold rounded-full">9. Sınıf</span>
+            </div>
+            <div class="mb-6">
+                <h4 class="text-sm font-bold text-slate-400 uppercase tracking-wider mb-2">Deneyin Konusu ve Kapsamı</h4>
+                <p class="text-slate-200 leading-relaxed text-base">
+                    Hassas kumpas, mikrometre ve teraziler kullanarak mikroskobik cisimlerin (örn: saç teli kalınlığı) ölçümü ve hata hesabı.
+                </p>
+            </div>
+            <div>
+                <h4 class="text-sm font-bold text-blue-400 uppercase tracking-wider mb-2 flex items-center gap-2">
+                    <span>🥽</span> VR (Sanal Gerçeklik) Kullanım Avantajları
+                </h4>
+                <div class="vr-box">
+                    Mikroskobik ölçeklerdeki kumpas ve mikrometre ölçümlerini 100x büyütülmüş 3D alanda elle kontrol etme, hassas hata hesaplamalarını anlık görsel verilerle sıfır ekipman yıpranması riskiyle deneyimleme imkanı sunar.
+                </div>
             </div>
         </div>
 
-        <!-- DENEY 1 -->
-        <div id="exp-1" class="detail-card active">
-            <div class="card-header">
-                <div class="card-title-area">
-                    <h2>Sürtünme Kuvveti Deneyi</h2>
-                </div>
-                <span class="grade-badge">9. Sınıf - Kuvvet ve Hareket</span>
-            </div>
-            <div class="section-title">Deneyin Konusu ve Kapsamı</div>
-            <div class="content-box">
-                Cismin ağırlığının (yüzeye uygulanan dik kuvvetin) ve temas eden yüzeylerin cinsinin, cismi harekete geçirmek veya hareketini sürdürmek için gereken sürtünme kuvvetine etkisinin incelenmesi.
-            </div>
-            <div class="section-title">VR (Sanal Gerçeklik) Kullanım Avantajları</div>
-            <div class="vr-box">
-                Gerçek laboratuvarda dinamometre okurken yapılan insan kaynaklı hataları sıfıra indirir. Cismin tam harekete geçtiği o kritik anı yakalayarak, statik sürtünmenin kinetik sürtünmeye dönüştüğü kırılma noktasını milisaniyelik, kusursuz grafikler halinde anında havaya çizer.
-            </div>
-        </div>
         <!-- DENEY 2 -->
         <div id="exp-2" class="detail-card">
-            <div class="card-header">
-                <div class="card-title-area">
-                    <h2>Eğik Düzlemde İvme Deneyi</h2>
+            <div class="flex justify-between items-start mb-4 border-b border-white/10 pb-4">
+                <div>
+                    <span class="topic-badge">Konu: Madde ve Özellikleri</span>
+                    <h2 class="text-2xl font-extrabold text-white">Kılcallık ve Özkütle Keşfi</h2>
                 </div>
-                <span class="grade-badge">11. Sınıf (ve 9. Sınıf) - Mekanik</span>
+                <span class="px-3 py-1 bg-blue-500/20 text-blue-300 border border-blue-500/30 text-xs font-bold rounded-full">9. Sınıf</span>
             </div>
-            <div class="section-title">Deneyin Konusu ve Kapsamı</div>
-            <div class="content-box">
-                Bir rampa (eğik düzlem) üzerinden serbest bırakılan küresel bir cismin, yerçekimi ivmesinin bileşenleri nedeniyle yaptığı hızlanan hareketin ve ivmenin rampa açısıyla ilişkisinin gözlemlenmesi.
+            <div class="mb-6">
+                <h4 class="text-sm font-bold text-slate-400 uppercase tracking-wider mb-2">Deneyin Konusu ve Kapsamı</h4>
+                <p class="text-slate-200 leading-relaxed text-base">
+                    Farklı sıvılarda kohezyon-adezyon kuvvetlerini moleküler düzeyde izleme ve sıvı tankına farklı cisimler atarak batma/yüzme durumlarını gözlemleme.
+                </p>
             </div>
-            <div class="section-title">VR (Sanal Gerçeklik) Kullanım Avantajları</div>
-            <div class="vr-box">
-                Gerçek dünyada sıfırlanması imkansız olan hava direnci ve sürtünme gibi kayıpları tamamen kapatarak kusursuz bir "ideal fizik ortamı" sunar.
+            <div>
+                <h4 class="text-sm font-bold text-blue-400 uppercase tracking-wider mb-2 flex items-center gap-2">
+                    <span>🥽</span> VR (Sanal Gerçeklik) Kullanım Avantajları
+                </h4>
+                <div class="vr-box">
+                    Sıvı yüzey gerilimini ve adezyon-kohezyon bağlarını molekül seviyesinde 3D görünür kılar. Sıvı özkütlesi ve cisim kütlesini anlık simülasyonla değiştirerek yüzme ve batma dengesini anında test etmenizi sağlar.
+                </div>
             </div>
         </div>
 
         <!-- DENEY 3 -->
         <div id="exp-3" class="detail-card">
-            <div class="card-header">
-                <div class="card-title-area">
-                    <h2>Ohm Yasası ve Reosta Deneyi</h2>
+            <div class="flex justify-between items-start mb-4 border-b border-white/10 pb-4">
+                <div>
+                    <span class="topic-badge">Konu: Enerji</span>
+                    <h2 class="text-2xl font-extrabold text-white">Enerji Dönüşümü (Kaykay Parkı)</h2>
                 </div>
-                <span class="grade-badge">10. Sınıf - Elektrik ve Manyetizma</span>
+                <span class="px-3 py-1 bg-blue-500/20 text-blue-300 border border-blue-500/30 text-xs font-bold rounded-full">9. Sınıf</span>
             </div>
-            <div class="section-title">Deneyin Konusu ve Kapsamı</div>
-            <div class="content-box">
-                Bir elektrik devresindeki reosta (ayarlanabilir direnç) sürgüsü hareket ettirilerek direnç değerinin değiştirilmesi; buna bağlı olarak akım ve voltaj değerlerinin değişim ilişkisinin (V = I &times; R) incelenmesi.
+            <div class="mb-6">
+                <h4 class="text-sm font-bold text-slate-400 uppercase tracking-wider mb-2">Deneyin Konusu ve Kapsamı</h4>
+                <p class="text-slate-200 leading-relaxed text-base">
+                    Sürtünmeli ve sürtünmesiz ortamda kaykaycının potansiyel ve kinetik enerji dönüşümlerini anlık 3D grafiklerle izleme.
+                </p>
             </div>
-            <div class="section-title">VR (Sanal Gerçeklik) Kullanım Avantajları</div>
-            <div class="vr-box">
-                Öğrencilerin aletleri bozma veya kısa devre yapma korkusu olmadan, güvenli bir sanal ortamda istedikleri kadar deneme yanılma yapabilmesini sağlar.
+            <div>
+                <h4 class="text-sm font-bold text-blue-400 uppercase tracking-wider mb-2 flex items-center gap-2">
+                    <span>🥽</span> VR (Sanal Gerçeklik) Kullanım Avantajları
+                </h4>
+                <div class="vr-box">
+                    Sürtünme katsayısını ve yerçekimi ivmesini anlık manipüle ederek kinetik, potansiyel ve ısı enerjisi dönüşüm grafiklerinin 3D ortamda karakter değişimini anında görselleştirir.
+                </div>
             </div>
         </div>
 
+        <!-- 10. SINIF DENEY KARTLARI -->
+
         <!-- DENEY 4 -->
         <div id="exp-4" class="detail-card">
-            <div class="card-header">
-                <div class="card-title-area">
-                    <h2>Merkezi Esnek Çarpışmalar Deneyi</h2>
+            <div class="flex justify-between items-start mb-4 border-b border-white/10 pb-4">
+                <div>
+                    <span class="topic-badge" style="color: #c084fc; border-color: rgba(192, 132, 252, 0.3); background: rgba(192, 132, 252, 0.1);">Konu: Elektrik ve Manyetizma</span>
+                    <h2 class="text-2xl font-extrabold text-white">Sanal Elektrik Devresi & Manyetik Alan</h2>
                 </div>
-                <span class="grade-badge">11. Sınıf - İtme ve Çizgisel Momentum</span>
+                <span class="px-3 py-1 bg-purple-500/20 text-purple-300 border border-purple-500/30 text-xs font-bold rounded-full">10. Sınıf</span>
             </div>
-            <div class="section-title">Deneyin Konusu ve Kapsamı</div>
-            <div class="content-box">
-                İki cismin doğrusal bir hat üzerinde kafa kafaya çarpışması sürecinde, kütle ve ilk hız parametreleri manipüle edilerek çarpışma öncesi ve sonrası hız/momentum değişimlerinin karşılaştırılması.
+            <div class="mb-6">
+                <h4 class="text-sm font-bold text-slate-400 uppercase tracking-wider mb-2">Deneyin Konusu ve Kapsamı</h4>
+                <p class="text-slate-200 leading-relaxed text-base">
+                    Yangın riski olmadan kısa devreler kurma, akım/gerilim ölçme. Mıknatısların etrafındaki 3D manyetik alan çizgilerinin arasında yürüme.
+                </p>
             </div>
-            <div class="section-title">VR (Sanal Gerçeklik) Kullanım Avantajları</div>
-            <div class="vr-box">
-                Cisimlerin kütle ve hız değerlerini dilediğiniz gibi değiştirip, çarpışma sonrası hızların nasıl etkilendiğini ekranda canlı olarak görmenizi sağlar.
+            <div>
+                <h4 class="text-sm font-bold text-purple-400 uppercase tracking-wider mb-2 flex items-center gap-2">
+                    <span>🥽</span> VR (Sanal Gerçeklik) Kullanım Avantajları
+                </h4>
+                <div class="vr-box">
+                    Görünmez mıknatıs manyetik alan vektörlerini 3D uzayda gözle görülür kılar. Devre elemanlarında aşırı ısınma ve patlama riski olmadan sınırsız seri-paralel kombinasyonu deneme imkanı tanır.
+                </div>
             </div>
         </div>
 
         <!-- DENEY 5 -->
         <div id="exp-5" class="detail-card">
-            <div class="card-header">
-                <div class="card-title-area">
-                    <h2>Manyetik Alanda Yüklü Parçacık Deneyi</h2>
+            <div class="flex justify-between items-start mb-4 border-b border-white/10 pb-4">
+                <div>
+                    <span class="topic-badge" style="color: #c084fc; border-color: rgba(192, 132, 252, 0.3); background: rgba(192, 132, 252, 0.1);">Konu: Optik</span>
+                    <h2 class="text-2xl font-extrabold text-white">Işık Kutusu ve Aynalar / Mercekler</h2>
                 </div>
-                <span class="grade-badge">11. Sınıf - Manyetizma</span>
+                <span class="px-3 py-1 bg-purple-500/20 text-purple-300 border border-purple-500/30 text-xs font-bold rounded-full">10. Sınıf</span>
             </div>
-            <div class="section-title">Deneyin Konusu ve Kapsamı</div>
-            <div class="content-box">
-                Sayfa düzlemine dik düzgün bir manyetik alan içerisine fırlatılan yüklü bir parçacığın; yük miktarı, kütlesi, hızı ve alan şiddetine bağlı olarak çizdiği çembersel yörüngenin ve sapma yönünün analizi.
+            <div class="mb-6">
+                <h4 class="text-sm font-bold text-slate-400 uppercase tracking-wider mb-2">Deneyin Konusu ve Kapsamı</h4>
+                <p class="text-slate-200 leading-relaxed text-base">
+                    Lazer ışınları göndererek yansıma, kırılma, odak noktası değişimi ve merceklerde görüntü oluşumunu dinamik olarak test etme.
+                </p>
             </div>
-            <div class="section-title">VR (Sanal Gerçeklik) Kullanım Avantajları</div>
-            <div class="vr-box">
-                Parçacığın kütlesini, hızını, elektrik yükünü ve manyetik alanın şiddetini dilediğiniz gibi değiştirerek, yörüngenin bu değerlere göre nasıl şekillendiğini anında görmenizi sağlar.
+            <div>
+                <h4 class="text-sm font-bold text-purple-400 uppercase tracking-wider mb-2 flex items-center gap-2">
+                    <span>🥽</span> VR (Sanal Gerçeklik) Kullanım Avantajları
+                </h4>
+                <div class="vr-box">
+                    Lazer odak ve kırılma noktalarını karanlık bir sanal optik odada göz hizasında açı açı inceleme, ince ve kalın kenarlı merceklerin odak uzaklığını anlık değiştirip kırılmayı izleme fırsatı sunar.
+                </div>
             </div>
         </div>
 
+        <!-- 11. SINIF DENEY KARTLARI -->
+
         <!-- DENEY 6 -->
         <div id="exp-6" class="detail-card">
-            <div class="card-header">
-                <div class="card-title-area">
-                    <h2>Fotodiyot ve Işık Şiddeti Deneyi</h2>
+            <div class="flex justify-between items-start mb-4 border-b border-white/10 pb-4">
+                <div>
+                    <span class="topic-badge" style="color: #34d399; border-color: rgba(52, 211, 153, 0.3); background: rgba(52, 211, 153, 0.1);">Konu: Kuvvet ve Hareket</span>
+                    <h2 class="text-2xl font-extrabold text-white">Çok Boyutlu Atışlar ve Çarpışmalar</h2>
                 </div>
-                <span class="grade-badge">12. Sınıf - Modern Fiziğin Teknolojideki Uygulamaları</span>
+                <span class="px-3 py-1 bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs font-bold rounded-full">11. Sınıf</span>
             </div>
-            <div class="section-title">Deneyin Konusu ve Kapsamı</div>
-            <div class="content-box">
-                bağlı bir devrede fotodiyot üzerine düşen görünür ışık şiddetinin akıma etkisinin ölçülmesi ve deneyin yüksek enerjili UV (morötesi) ışık kaynaklarıyla tekrarlanarak spektrum duyarlılığının karşılaştırılması.
+            <div class="mb-6">
+                <h4 class="text-sm font-bold text-slate-400 uppercase tracking-wider mb-2">Deneyin Konusu ve Kapsamı</h4>
+                <p class="text-slate-200 leading-relaxed text-base">
+                    Yerçekimini değiştirerek (Ay, Dünya, Jüpiter) atış menzili ölçme. Hava masasında momentum ve enerji korunumu grafiklerini izleme.
+                </p>
             </div>
-            <div class="section-title">VR (Sanal Gerçeklik) Kullanım Avantajları</div>
-            <div class="vr-box">
-                Gerçek laboratuvarlarda göz ve cilt için tehlikeli olabilen UV (morötesi) ışınlarla yapılacak deneyleri, hiçbir sağlık riski olmadan ve tamamen güvenli bir sanal ortamda test etmenizi sağlar.
+            <div>
+                <h4 class="text-sm font-bold text-emerald-400 uppercase tracking-wider mb-2 flex items-center gap-2">
+                    <span>🥽</span> VR (Sanal Gerçeklik) Kullanım Avantajları
+                </h4>
+                <div class="vr-box">
+                    Gerçekte imkansız olan gezegenler arası yerçekimi değişikliklerini (Ay, Jüpiter) anında simüle eder. Hava masası üzerindeki sürtünmesiz esnek ve esnek olmayan çarpışma vektörlerini canlı takip ettirir.
+                </div>
+            </div>
+        </div>
+
+        <!-- DENEY 7 -->
+        <div id="exp-7" class="detail-card">
+            <div class="flex justify-between items-start mb-4 border-b border-white/10 pb-4">
+                <div>
+                    <span class="topic-badge" style="color: #34d399; border-color: rgba(52, 211, 153, 0.3); background: rgba(52, 211, 153, 0.1);">Konu: Elektromanyetizma</span>
+                    <h2 class="text-2xl font-extrabold text-white">3D Elektriksel Alan Haritası</h2>
+                </div>
+                <span class="px-3 py-1 bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs font-bold rounded-full">11. Sınıf</span>
+            </div>
+            <div class="mb-6">
+                <h4 class="text-sm font-bold text-slate-400 uppercase tracking-wider mb-2">Deneyin Konusu ve Kapsamı</h4>
+                <p class="text-slate-200 leading-relaxed text-base">
+                    Sanal uzayda artı/eksi yükler yerleştirerek görünmez üç boyutlu alan çizgilerini görselleştirme ve içlerinde yürüme.
+                </p>
+            </div>
+            <div>
+                <h4 class="text-sm font-bold text-emerald-400 uppercase tracking-wider mb-2 flex items-center gap-2">
+                    <span>🥽</span> VR (Sanal Gerçeklik) Kullanım Avantajları
+                </h4>
+                <div class="vr-box">
+                    İki boyutlu tahtada gösterimi zor olan 3D elektrik potansiyeli ve alan vektörlerini sanal odada nesne gibi konumlandırarak kullanıcıya etrafında yürüme ve kuvvet kuvvetlerini hissetme deneyimi yaşatır.
+                </div>
+            </div>
+        </div>
+
+        <!-- 12. SINIF DENEY KARTLARI -->
+
+        <!-- DENEY 8 -->
+        <div id="exp-8" class="detail-card">
+            <div class="flex justify-between items-start mb-4 border-b border-white/10 pb-4">
+                <div>
+                    <span class="topic-badge" style="color: #fbbf24; border-color: rgba(251, 191, 36, 0.3); background: rgba(251, 191, 36, 0.1);">Konu: Dalga Mekaniği</span>
+                    <h2 class="text-2xl font-extrabold text-white">Young Çift Yarıkta Girişim</h2>
+                </div>
+                <span class="px-3 py-1 bg-amber-500/20 text-amber-300 border border-amber-500/30 text-xs font-bold rounded-full">12. Sınıf</span>
+            </div>
+            <div class="mb-6">
+                <h4 class="text-sm font-bold text-slate-400 uppercase tracking-wider mb-2">Deneyin Konusu ve Kapsamı</h4>
+                <p class="text-slate-200 leading-relaxed text-base">
+                    Yarıklar arası mesafeyi ve ışık rengini anlık değiştirerek ekrandaki saçakların değişimini ve ışığın dalga doğasını inceleme.
+                </p>
+            </div>
+            <div>
+                <h4 class="text-sm font-bold text-amber-400 uppercase tracking-wider mb-2 flex items-center gap-2">
+                    <span>🥽</span> VR (Sanal Gerçeklik) Kullanım Avantajları
+                </h4>
+                <div class="vr-box">
+                    Işık dalga boyunu (nm cinsinden) ve yarık mesafesini mikro hassasiyetle değiştirerek karanlık-aydınlık girişim saçaklarının anlık oluşumunu mikro laboratuvar ortamında gözlemlemeyi mümkün kılar.
+                </div>
+            </div>
+        </div>
+
+        <!-- DENEY 9 -->
+        <div id="exp-9" class="detail-card">
+            <div class="flex justify-between items-start mb-4 border-b border-white/10 pb-4">
+                <div>
+                    <span class="topic-badge" style="color: #fbbf24; border-color: rgba(251, 191, 36, 0.3); background: rgba(251, 191, 36, 0.1);">Konu: Modern Fizik & Atom</span>
+                    <h2 class="text-2xl font-extrabold text-white">Rutherford Saçılması & Fotoelektrik</h2>
+                </div>
+                <span class="px-3 py-1 bg-amber-500/20 text-amber-300 border border-amber-500/30 text-xs font-bold rounded-full">12. Sınıf</span>
+            </div>
+            <div class="mb-6">
+                <h4 class="text-sm font-bold text-slate-400 uppercase tracking-wider mb-2">Deneyin Konusu ve Kapsamı</h4>
+                <p class="text-slate-200 leading-relaxed text-base">
+                    Alfa taneciklerini altın levhaya fırlatıp çekirdeği gözlemleme. Metal levhadan ışıkla elektron sökerek akım oluşturma.
+                </p>
+            </div>
+            <div>
+                <h4 class="text-sm font-bold text-amber-400 uppercase tracking-wider mb-2 flex items-center gap-2">
+                    <span>🥽</span> VR (Sanal Gerçeklik) Kullanım Avantajları
+                </h4>
+                <div class="vr-box">
+                    Radyoaktif alfa parçacığı tehlikesi ve pahalı kuantum düzeneği gerektiren atom çekirdeği saçılma deneylerini %100 güvenle, atom altı boyutta canlı 3D simülasyon olarak sunar.
+                </div>
             </div>
         </div>
 
     </div>
 
-    <!-- Sekme Değiştirme Scripti -->
+    <!-- SCRIPT FOR GRADE FILTERING AND EXPERIMENT TABS -->
     <script>
+        function filterByGrade(grade, btnElement) {
+            // Update active grade button styling
+            const buttons = document.querySelectorAll('.grade-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            btnElement.classList.add('active');
+
+            // Filter sidebar nav items
+            const navItems = document.querySelectorAll('#expNavList .nav-item');
+            let firstVisibleItem = null;
+
+            navItems.forEach(item => {
+                const itemGrade = item.getAttribute('data-grade');
+                if (grade === 'all' || itemGrade === grade) {
+                    item.style.display = 'block';
+                    if (!firstVisibleItem) firstVisibleItem = item;
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+
+            // If currently active item is hidden, auto-select the first visible experiment
+            const activeNav = document.querySelector('#expNavList .nav-item.active');
+            if (activeNav && activeNav.style.display === 'none' && firstVisibleItem) {
+                const expId = firstVisibleItem.getAttribute('data-exp-id');
+                showExperiment(expId, firstVisibleItem);
+            }
+        }
+
         function showExperiment(id, element) {
-            // Aktif menü elemanını değiştirme
+            // Update active nav item
             const items = document.querySelectorAll('.nav-item');
             items.forEach(item => item.classList.remove('active'));
             element.classList.add('active');
 
-            // Aktif içerik kartını değiştirme
+            // Show selected detail card with animation
             const cards = document.querySelectorAll('.detail-card');
-            cards.forEach(card => card.classList.remove('active'));
-            
-            const targetCard = document.getElementById('exp-' + id);
-            if (targetCard) {
-                targetCard.classList.add('active');
-            }
+            cards.forEach(card => {
+                card.classList.remove('active');
+                if (card.id === id) {
+                    card.classList.add('active');
+                }
+            });
         }
     </script>
 </body>
