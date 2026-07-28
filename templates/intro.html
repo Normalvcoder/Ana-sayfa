@@ -34,11 +34,11 @@
         <div>
             {% if session.get('user') %}
                 <a href="{{ url_for('account') }}" class="glass-card hover:bg-white/10 px-5 py-2.5 rounded-full text-sm font-semibold transition border border-white/20">
-                    Hesabım ({{ session['user']['username'] }})
+                    Yönetici Paneli ({{ session['user']['username'] }})
                 </a>
             {% else %}
                 <a href="{{ url_for('login') }}" class="glass-card hover:bg-white/10 px-5 py-2.5 rounded-full text-sm font-semibold transition border border-white/20">
-                    Giriş Yap
+                    Yönetici Girişi
                 </a>
             {% endif %}
         </div>
@@ -65,15 +65,9 @@
             </p>
 
             <div class="flex flex-col sm:flex-row gap-4 justify-center items-center pt-6">
-                {% if session.get('user') %}
-                    <a href="{{ url_for('home') }}" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-xl font-bold transition shadow-lg shadow-blue-500/30 transform hover:-translate-y-1">
-                        Sisteme Giriş Yap
-                    </a>
-                {% else %}
-                    <a href="{{ url_for('login') }}" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-xl font-bold transition shadow-lg shadow-blue-500/30 transform hover:-translate-y-1">
-                        Hemen Başla (Giriş)
-                    </a>
-                {% endif %}
+                <a href="{{ url_for('home') }}" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-xl font-bold transition shadow-lg shadow-blue-500/30 transform hover:-translate-y-1">
+                    Portala Giriş Yap / Hemen Keşfet
+                </a>
                 <a href="#proje-hakkinda" class="w-full sm:w-auto glass-card hover:bg-white/10 text-white px-8 py-4 rounded-xl font-semibold transition border border-white/20">
                     Daha Fazla Bilgi
                 </a>

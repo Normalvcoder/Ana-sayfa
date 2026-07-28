@@ -33,19 +33,17 @@ def intro():
     return render_template('intro.html')
 
 @app.route('/anasayfa')
-@login_required
 def home():
     return render_template('anasayfa.html')
 
 @app.route('/fiziklab')
-@login_required
 def fizik_lab():
     return render_template('vrfiziklab.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if 'user' in session:
-        return redirect(url_for('home'))
+        return redirect(url_for('account') if session['user'].get('role') == 'admin' else url_for('home'))
         
     if request.method == 'POST':
         username = request.form.get('username')
@@ -55,6 +53,8 @@ def login():
         if user:
             session['user'] = user
             flash(f'Hoş geldiniz, {username}!', 'success')
+            if user.get('role') == 'admin':
+                return redirect(url_for('account'))
             return redirect(url_for('home'))
         else:
             flash('Hatalı kullanıcı adı veya şifre.', 'error')
