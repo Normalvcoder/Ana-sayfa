@@ -12,23 +12,113 @@
             font-family: 'Inter', sans-serif;
             background: radial-gradient(circle at top right, #1e1b4b, #090514);
         }
+        
+        /* 1. MORPH ANIMATIONS */
+        @keyframes morphGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes morphShape {
+            0% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; transform: rotate(0deg) scale(1); }
+            50% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; transform: rotate(180deg) scale(1.08); }
+            100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; transform: rotate(360deg) scale(1); }
+        }
+
+        @keyframes morphGlow {
+            0%, 100% {
+                border-color: rgba(59, 130, 246, 0.2);
+                box-shadow: 0 10px 30px -10px rgba(59, 130, 246, 0.15);
+            }
+            50% {
+                border-color: rgba(139, 92, 246, 0.5);
+                box-shadow: 0 15px 40px -10px rgba(139, 92, 246, 0.35);
+            }
+        }
+
+        /* 2. FADE & PUSH LOADING ANIMATIONS */
+        @keyframes fadePushUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 0.8; }
+        }
+
+        /* UTILITY CLASSES */
         .gradient-text {
-            background: linear-gradient(to right, #3b82f6, #8b5cf6, #ec4899);
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899, #3b82f6);
+            background-size: 300% 300%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            animation: morphGradient 8s ease infinite;
         }
+
         .glass-nav {
             background: rgba(9, 5, 20, 0.85);
             backdrop-filter: blur(16px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         }
+
         .glass-card {
             background: rgba(255, 255, 255, 0.04);
             backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .feature-card img { transition: transform 0.5s ease; }
-        .feature-card:hover img { transform: scale(1.05); }
+
+        /* MORPH COMPONENT HOVER EFFECT */
+        .anim-morph-card {
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform, box-shadow, border-color;
+        }
+
+        .anim-morph-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            animation: morphGlow 3s infinite alternate;
+        }
+
+        /* PUSH BUTTON / CARD ACTIVE EFFECT */
+        .anim-push {
+            transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease;
+        }
+
+        .anim-push:hover {
+            transform: translateY(-3px) scale(1.02);
+        }
+
+        .anim-push:active {
+            transform: translateY(1px) scale(0.96) !important;
+        }
+
+        /* FADE-PUSH SCROLL REVEAL CLASS */
+        .anim-fade-push {
+            opacity: 0;
+            transform: translateY(45px) scale(0.95);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: opacity, transform;
+        }
+
+        .anim-fade-push.is-visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        .anim-morph-bg {
+            animation: morphShape 20s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate;
+        }
+
+        .feature-card img { transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1); }
+        .feature-card:hover img { transform: scale(1.08); }
     </style>
 </head>
 <body class="text-slate-100 antialiased overflow-x-hidden relative">
@@ -38,24 +128,24 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-20">
                 <div class="flex items-center gap-2">
-                    <a href="{{ url_for('intro') }}" class="font-black text-2xl tracking-tighter text-white">OYAD<span class="text-blue-500">SAVTEK</span></a>
+                    <a href="{{ url_for('intro') }}" class="font-black text-2xl tracking-tighter text-white anim-push">OYAD<span class="text-blue-500">SAVTEK</span></a>
                 </div>
                 <div class="flex items-center gap-4">
                     <div class="hidden md:flex space-x-8 mr-4">
-                        <a href="#laboratuvarlar" class="text-slate-300 hover:text-white font-medium transition">Laboratuvarlar</a>
-                        <a href="#vr-deneyimi" class="text-slate-300 hover:text-white font-medium transition">Neden VR?</a>
-                        <a href="#sorunlar" class="text-slate-300 hover:text-white font-medium transition">Çözümlerimiz</a>
-                        <a href="#yorumlar" class="text-slate-300 hover:text-white font-medium transition">Öğretmen Yorumları</a>
+                        <a href="#laboratuvarlar" class="text-slate-300 hover:text-white font-medium transition hover:scale-105 inline-block">Laboratuvarlar</a>
+                        <a href="#vr-deneyimi" class="text-slate-300 hover:text-white font-medium transition hover:scale-105 inline-block">Neden VR?</a>
+                        <a href="#sorunlar" class="text-slate-300 hover:text-white font-medium transition hover:scale-105 inline-block">Çözümlerimiz</a>
+                        <a href="#yorumlar" class="text-slate-300 hover:text-white font-medium transition hover:scale-105 inline-block">Öğretmen Yorumları</a>
                     </div>
                     {% if session.get('user') %}
-                        <a href="{{ url_for('account') }}" class="text-slate-300 hover:text-white font-semibold transition text-sm">
+                        <a href="{{ url_for('account') }}" class="text-slate-300 hover:text-white font-semibold transition text-sm anim-push">
                             Yönetici Paneli ({{ session['user']['username'] }})
                         </a>
-                        <a href="{{ url_for('logout') }}" class="bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 px-4 py-2 rounded-full font-semibold transition text-sm">
+                        <a href="{{ url_for('logout') }}" class="bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 px-4 py-2 rounded-full font-semibold transition text-sm anim-push">
                             Çıkış Yap
                         </a>
                     {% else %}
-                        <a href="{{ url_for('login') }}" class="glass-card hover:bg-white/10 text-slate-200 border border-white/20 px-5 py-2 rounded-full font-semibold transition text-sm">
+                        <a href="{{ url_for('login') }}" class="glass-card hover:bg-white/10 text-slate-200 border border-white/20 px-5 py-2 rounded-full font-semibold transition text-sm anim-push">
                             Yönetici Girişi
                         </a>
                     {% endif %}
@@ -74,23 +164,28 @@
             <div class="absolute inset-0 bg-gradient-to-b from-[#090514]/40 via-[#090514]/65 to-[#090514]"></div>
         </div>
 
-        <div class="absolute w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[120px] top-1/4 left-1/4 -z-10 animate-pulse"></div>
+        <!-- MORPHING GLOW BG SHAPES -->
+        <div class="absolute w-[500px] h-[500px] bg-blue-600/15 rounded-full blur-[120px] top-1/4 left-1/4 -z-10 anim-morph-bg"></div>
+        <div class="absolute w-[450px] h-[450px] bg-purple-600/15 rounded-full blur-[110px] bottom-1/4 right-1/4 -z-10 anim-morph-bg" style="animation-delay: -7s;"></div>
+
         <div class="max-w-4xl mx-auto relative z-10">
-            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/10 text-blue-300 font-semibold text-sm mb-6 border border-blue-500/20">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/10 text-blue-300 font-semibold text-sm mb-6 border border-blue-500/20 anim-fade-push">
                 <span class="flex h-2 w-2 rounded-full bg-blue-500 animate-pulse"></span>
                 Pasif Öğrenmeden Aktif Deneyime
             </div>
-            <h1 class="text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight mb-6 text-white">
+
+            <h1 class="text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight mb-6 text-white anim-fade-push" data-delay="100">
                 Geleceğin <span class="gradient-text">Fen Laboratuvarı</span>
             </h1>
-            <p class="text-xl md:text-2xl text-slate-400 mb-10 font-light max-w-3xl mx-auto">
+
+            <p class="text-xl md:text-2xl text-slate-400 mb-10 font-light max-w-3xl mx-auto anim-fade-push" data-delay="200">
                 Labınız artık sınıfınızın içinde. Güvenli, sınırsız ve herkes için eşit bilimsel deneyim.
             </p>
             
             <!-- Ana Video / Demo Alanı -->
-            <div class="relative max-w-4xl mx-auto rounded-2xl overflow-hidden shadow-2xl border-4 border-white/5 bg-slate-900 group">
+            <div class="relative max-w-4xl mx-auto rounded-2xl overflow-hidden shadow-2xl border-4 border-white/5 bg-slate-900 group anim-fade-push anim-morph-card" data-delay="300">
                 <div class="absolute top-4 left-4 z-10 bg-black/60 backdrop-blur-md text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2">
-                    <span class="w-3 h-3 rounded-full bg-red-500"></span>
+                    <span class="w-3 h-3 rounded-full bg-red-500 animate-pulse"></span>
                     Sınıfınıza Sığan Lab - Demo
                 </div>
                 <video class="w-full aspect-video object-cover" controls poster="{{ url_for('static', filename='images/Gemini_Generated_Image_gkshoxgkshoxgksh.png') }}">
@@ -101,10 +196,10 @@
         </div>
     </section>
 
-    <!-- MEB MÜFREDAT UYUMU -->
-    <section class="bg-white/5 border-y border-white/10 py-8 backdrop-blur-sm">
+    <!-- MEB MÜFREDAT UYUMU COMPONENT -->
+    <section class="bg-white/5 border-y border-white/10 py-8 backdrop-blur-sm anim-fade-push">
         <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-center gap-6 text-center md:text-left">
-            <div class="bg-blue-500/10 text-blue-400 p-3 rounded-full border border-blue-500/20">
+            <div class="bg-blue-500/10 text-blue-400 p-3 rounded-full border border-blue-500/20 anim-push">
                 <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
             </div>
             <div>
@@ -114,65 +209,65 @@
         </div>
     </section>
 
-    <!-- 3 BRANŞ - SANAL LABORATUVARLARA GİRİŞ (ÖNE TAŞINDI) -->
+    <!-- 3 BRANŞ - SANAL LABORATUVARLARA GİRİŞ COMPONENT -->
     <section id="laboratuvarlar" class="py-24 bg-transparent">
         <div class="max-w-7xl mx-auto px-4">
-            <div class="text-center mb-16">
+            <div class="text-center mb-16 anim-fade-push">
                 <h2 class="text-3xl md:text-5xl font-bold mb-4 text-white">Sanal Laboratuvarlara Giriş</h2>
                 <p class="text-slate-400 text-lg">Keşfetmek istediğiniz branşı seçin.</p>
             </div>
 
             <div class="grid md:grid-cols-3 gap-8">
-                <!-- FİZİK LAB -->
-                <div class="group rounded-3xl overflow-hidden border border-white/10 shadow-xl relative bg-slate-900">
-                    <img src="{{ url_for('static', filename='images/istockphoto-664198918-1024x1024.jpg') }}" alt="Fizik Lab" class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-40 transition-opacity duration-300">
+                <!-- FİZİK LAB CARD -->
+                <div class="group rounded-3xl overflow-hidden border border-white/10 shadow-xl relative bg-slate-900 anim-fade-push anim-morph-card" data-delay="0">
+                    <img src="{{ url_for('static', filename='images/istockphoto-664198918-1024x1024.jpg') }}" alt="Fizik Lab" class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-40 transition-opacity duration-500">
                     <div class="p-8 relative z-10 flex flex-col h-full justify-between min-h-[400px]">
                         <div>
                             <h3 class="text-3xl font-bold mb-3 text-white">Fizik</h3>
                             <p class="text-slate-200 mb-4 font-medium">Uzay boşluğunda serbest düşüş, devre yakma korkusu olmadan sonsuz simülasyon ve görünmez dalga boylarını elle tutma imkanı.</p>
                         </div>
-                        <a href="{{ url_for('fizik_lab') }}" class="inline-block w-full text-center bg-blue-600 hover:bg-blue-500 text-white py-3 rounded-xl font-bold transition shadow-lg shadow-blue-500/30">Fizik Panosuna Git &rarr;</a>
+                        <a href="{{ url_for('fizik_lab') }}" class="inline-block w-full text-center bg-blue-600 hover:bg-blue-500 text-white py-3 rounded-xl font-bold transition shadow-lg shadow-blue-500/30 anim-push">Fizik Panosuna Git &rarr;</a>
                     </div>
                 </div>
 
-                <!-- KİMYA LAB -->
-                <div class="group rounded-3xl overflow-hidden border border-white/10 shadow-xl relative bg-slate-900">
-                    <img src="{{ url_for('static', filename='images/istockphoto-990711646-1024x1024.jpg') }}" alt="Kimya Lab" class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-40 transition-opacity duration-300">
+                <!-- KİMYA LAB CARD -->
+                <div class="group rounded-3xl overflow-hidden border border-white/10 shadow-xl relative bg-slate-900 anim-fade-push anim-morph-card" data-delay="150">
+                    <img src="{{ url_for('static', filename='images/istockphoto-990711646-1024x1024.jpg') }}" alt="Kimya Lab" class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-40 transition-opacity duration-500">
                     <div class="p-8 relative z-10 flex flex-col h-full justify-between min-h-[400px]">
                         <div>
                             <h3 class="text-3xl font-bold mb-3 text-white">Kimya</h3>
                             <p class="text-slate-200 mb-4 font-medium">Sonsuz kimyasal kullanımı, sıfır risk. Tepkimeleri atom seviyesinde izleyin, Na + su gibi tehlikeli reaksiyonları güvenle gözlemleyin.</p>
                         </div>
-                        <a href="vrkimyalab.html" class="inline-block w-full text-center bg-orange-500 hover:bg-orange-400 text-white py-3 rounded-xl font-bold transition shadow-lg shadow-orange-500/30">Kimya Panosuna Git &rarr;</a>
+                        <a href="vrkimyalab.html" class="inline-block w-full text-center bg-orange-500 hover:bg-orange-400 text-white py-3 rounded-xl font-bold transition shadow-lg shadow-orange-500/30 anim-push">Kimya Panosuna Git &rarr;</a>
                     </div>
                 </div>
 
-                <!-- BİYOLOJİ LAB -->
-                <div class="group rounded-3xl overflow-hidden border border-white/10 shadow-xl relative bg-slate-900">
-                    <img src="{{ url_for('static', filename='images/istockphoto-1089737754-1024x1024.jpg') }}" alt="Biyoloji Lab" class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-40 transition-opacity duration-300">
+                <!-- BİYOLOJİ LAB CARD -->
+                <div class="group rounded-3xl overflow-hidden border border-white/10 shadow-xl relative bg-slate-900 anim-fade-push anim-morph-card" data-delay="300">
+                    <img src="{{ url_for('static', filename='images/istockphoto-1089737754-1024x1024.jpg') }}" alt="Biyoloji Lab" class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-40 transition-opacity duration-500">
                     <div class="p-8 relative z-10 flex flex-col h-full justify-between min-h-[400px]">
                         <div>
                             <h3 class="text-3xl font-bold mb-3 text-white">Biyoloji</h3>
                             <p class="text-slate-200 mb-4 font-medium">Hücrenin içine bizzat girin. Sanal diseksiyon, organel turları ve mitoz bölünmeyi adım adım, renkli ve 100x daha büyük izleyin.</p>
                         </div>
-                        <a href="vrbiyolojilab.html" class="inline-block w-full text-center bg-emerald-500 hover:bg-emerald-400 text-white py-3 rounded-xl font-bold transition shadow-lg shadow-emerald-500/30">Biyoloji Panosuna Git &rarr;</a>
+                        <a href="vrbiyolojilab.html" class="inline-block w-full text-center bg-emerald-500 hover:bg-emerald-400 text-white py-3 rounded-xl font-bold transition shadow-lg shadow-emerald-500/30 anim-push">Biyoloji Panosuna Git &rarr;</a>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- VR ÖZELLİKLERİ VE GEMINI GÖRSELLERİ GALERİSİ -->
+    <!-- VR ÖZELLİKLERİ COMPONENT -->
     <section id="vr-deneyimi" class="py-24 bg-transparent text-white">
         <div class="max-w-7xl mx-auto px-4">
-            <div class="text-center mb-16">
+            <div class="text-center mb-16 anim-fade-push">
                 <h2 class="text-3xl md:text-4xl font-bold mb-4">Sanal Gerçeklik ile Eğitimin Yeni Boyutu</h2>
                 <p class="text-lg text-slate-400">Teknolojinin gücünü sınıfınıza getiren 4 temel sütun.</p>
             </div>
 
             <div class="grid md:grid-cols-2 gap-8">
                 <!-- Özellik 1 -->
-                <div class="feature-card relative rounded-2xl overflow-hidden glass-card aspect-video group">
+                <div class="feature-card relative rounded-2xl overflow-hidden glass-card aspect-video group anim-fade-push anim-morph-card" data-delay="0">
                     <img src="{{ url_for('static', filename='images/Gemini_Generated_Image_gkshoxgkshoxgksh.png') }}" alt="Güvenli ve Modern Eğitim" class="w-full h-full object-cover opacity-60 group-hover:opacity-40">
                     <div class="absolute inset-0 p-8 flex flex-col justify-end bg-gradient-to-t from-[#090514] via-[#090514]/60 to-transparent">
                         <h3 class="text-2xl font-bold mb-2">Güvenli ve Modern Eğitim</h3>
@@ -181,7 +276,7 @@
                 </div>
 
                 <!-- Özellik 2 -->
-                <div class="feature-card relative rounded-2xl overflow-hidden glass-card aspect-video group">
+                <div class="feature-card relative rounded-2xl overflow-hidden glass-card aspect-video group anim-fade-push anim-morph-card" data-delay="150">
                     <img src="{{ url_for('static', filename='images/Gemini_Generated_Image_sh4xscsh4xscsh4x.png') }}" alt="Sınıfınıza Sığan Laboratuvar" class="w-full h-full object-cover opacity-60 group-hover:opacity-40">
                     <div class="absolute inset-0 p-8 flex flex-col justify-end bg-gradient-to-t from-[#090514] via-[#090514]/60 to-transparent">
                         <h3 class="text-2xl font-bold mb-2">Sınıfınıza Sığan Laboratuvar</h3>
@@ -190,7 +285,7 @@
                 </div>
 
                 <!-- Özellik 3 -->
-                <div class="feature-card relative rounded-2xl overflow-hidden glass-card aspect-video group">
+                <div class="feature-card relative rounded-2xl overflow-hidden glass-card aspect-video group anim-fade-push anim-morph-card" data-delay="0">
                     <img src="{{ url_for('static', filename='images/Gemini_Generated_Image_uml47quml47quml4.png') }}" alt="Tehlikesiz Deneyimler" class="w-full h-full object-cover opacity-60 group-hover:opacity-40">
                     <div class="absolute inset-0 p-8 flex flex-col justify-end bg-gradient-to-t from-[#090514] via-[#090514]/60 to-transparent">
                         <h3 class="text-2xl font-bold mb-2">Tehlikesiz Deneyimler</h3>
@@ -199,7 +294,7 @@
                 </div>
 
                 <!-- Özellik 4 -->
-                <div class="feature-card relative rounded-2xl overflow-hidden glass-card aspect-video group">
+                <div class="feature-card relative rounded-2xl overflow-hidden glass-card aspect-video group anim-fade-push anim-morph-card" data-delay="150">
                     <img src="{{ url_for('static', filename='images/Gemini_Generated_Image_unrucyunrucyunru.png') }}" alt="Veri ve Kontrol" class="w-full h-full object-cover opacity-60 group-hover:opacity-40">
                     <div class="absolute inset-0 p-8 flex flex-col justify-end bg-gradient-to-t from-[#090514] via-[#090514]/60 to-transparent">
                         <h3 class="text-2xl font-bold mb-2">Kusursuz Veri ve Kontrol</h3>
@@ -210,59 +305,59 @@
         </div>
     </section>
 
-    <!-- SORUNLAR VE ÇÖZÜMLER -->
+    <!-- SORUNLAR VE ÇÖZÜMLER COMPONENT -->
     <section id="sorunlar" class="py-24 bg-transparent">
         <div class="max-w-7xl mx-auto px-4">
-            <div class="text-center mb-16">
+            <div class="text-center mb-16 anim-fade-push">
                 <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Eski Sorunlara, Yeni Boyut Çözümler</h2>
                 <p class="text-lg text-slate-400">Geleneksel laboratuvarların engellerini Sanal Gerçeklik ile kaldırıyoruz.</p>
             </div>
 
             <div class="grid md:grid-cols-2 gap-8">
                 <!-- 1. Yüksek Lab Maliyeti -->
-                <div class="glass-card p-6 rounded-2xl flex flex-col group hover:shadow-md transition-shadow duration-300">
+                <div class="glass-card p-6 rounded-2xl flex flex-col group hover:shadow-md transition-all duration-300 anim-fade-push anim-morph-card" data-delay="0">
                     <div class="overflow-hidden rounded-xl mb-6 h-56 bg-slate-900">
                         <img src="{{ url_for('static', filename='images/Yüksek Lab Maliyeti.png') }}" alt="Yüksek Maliyet" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-80">
                     </div>
                     <h4 class="text-lg font-bold text-slate-200 mb-2 flex items-center gap-2"><span class="text-red-500">❌</span> Yüksek Lab Maliyeti & Sınırlı Malzeme</h4>
                     <p class="text-slate-400 text-sm mb-6">Sürekli tükenen malzemeler, bozulan pahalı ekipmanlar (osiloskop, dinamometre) yüzünden deneyler yapılamıyor.</p>
-                    <div class="bg-blue-500/10 p-3 rounded-lg border border-blue-500/20 mt-auto">
+                    <div class="bg-blue-500/10 p-3 rounded-lg border border-blue-500/20 mt-auto anim-push">
                         <p class="text-blue-300 text-sm font-semibold">✅ Sıfır Sarf Malzemesi Gideri, Sınırsız Simülasyon</p>
                     </div>
                 </div>
 
                 <!-- 2. Güvenlik Endişesi -->
-                <div class="glass-card p-6 rounded-2xl flex flex-col group hover:shadow-md transition-shadow duration-300">
+                <div class="glass-card p-6 rounded-2xl flex flex-col group hover:shadow-md transition-all duration-300 anim-fade-push anim-morph-card" data-delay="150">
                     <div class="overflow-hidden rounded-xl mb-6 h-56 bg-slate-900">
                         <img src="{{ url_for('static', filename='images/Güvenlik Endişeleri.jpg') }}" alt="Güvenlik Endişesi" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-80">
                     </div>
                     <h4 class="text-lg font-bold text-slate-200 mb-2 flex items-center gap-2"><span class="text-red-500">❌</span> Güvenlik Endişesi</h4>
                     <p class="text-slate-400 text-sm mb-6">Zehirli gazlar, asit-baz yanıkları, UV ışınları ve kısa devre riskleri yüzünden tehlikeli reaksiyonlar sınıflarda gösterilemiyor.</p>
-                    <div class="bg-blue-500/10 p-3 rounded-lg border border-blue-500/20 mt-auto">
+                    <div class="bg-blue-500/10 p-3 rounded-lg border border-blue-500/20 mt-auto anim-push">
                         <p class="text-blue-300 text-sm font-semibold">✅ Kimya Sınıfında Patlama? Artık Sorun Değil. %100 Güvenli.</p>
                     </div>
                 </div>
 
                 <!-- 3. Zaman Yetersizliği -->
-                <div class="glass-card p-6 rounded-2xl flex flex-col group hover:shadow-md transition-shadow duration-300">
+                <div class="glass-card p-6 rounded-2xl flex flex-col group hover:shadow-md transition-all duration-300 anim-fade-push anim-morph-card" data-delay="0">
                     <div class="overflow-hidden rounded-xl mb-6 h-56 bg-slate-900">
                         <img src="{{ url_for('static', filename='images/Zaman Yetersizliği.png') }}" alt="Zaman Yetersizliği" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-80">
                     </div>
                     <h4 class="text-lg font-bold text-slate-200 mb-2 flex items-center gap-2"><span class="text-red-500">❌</span> Zaman Yetersizliği & Kalitesiz Görüntü</h4>
                     <p class="text-slate-400 text-sm mb-6">Kurulum ve temizlik dersi bitiriyor. Ayrıca mikroskoplar yetersiz, DNA/Mitoz gibi soyut süreçler anlaşılamıyor.</p>
-                    <div class="bg-blue-500/10 p-3 rounded-lg border border-blue-500/20 mt-auto">
+                    <div class="bg-blue-500/10 p-3 rounded-lg border border-blue-500/20 mt-auto anim-push">
                         <p class="text-blue-300 text-sm font-semibold">✅ Kurulum Yok. Hücrenin İçine "Gir", Adım Adım İzle.</p>
                     </div>
                 </div>
 
                 <!-- 4. İmkansız Deneyler -->
-                <div class="glass-card p-6 rounded-2xl flex flex-col group hover:shadow-md transition-shadow duration-300">
+                <div class="glass-card p-6 rounded-2xl flex flex-col group hover:shadow-md transition-all duration-300 anim-fade-push anim-morph-card" data-delay="150">
                     <div class="overflow-hidden rounded-xl mb-6 h-56 bg-slate-900">
                         <img src="{{ url_for('static', filename='images/İmkansız deneyler.jpg') }}" alt="İmkansız Deneyler" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-80">
                     </div>
                     <h4 class="text-lg font-bold text-slate-200 mb-2 flex items-center gap-2"><span class="text-red-500">❌</span> İmkansız Deneyler & Eşitsizlik</h4>
                     <p class="text-slate-400 text-sm mb-6">Uzay boşluğunda serbest düşüş, hayvan diseksiyonu (etik sorunlar) veya ışık dalgalarını elle tutmak gerçekte imkansızdır.</p>
-                    <div class="bg-blue-500/10 p-3 rounded-lg border border-blue-500/20 mt-auto">
+                    <div class="bg-blue-500/10 p-3 rounded-lg border border-blue-500/20 mt-auto anim-push">
                         <p class="text-blue-300 text-sm font-semibold">✅ Her Öğrenci İçin Ön Sırada, Fiziksel Sınırların Ötesinde Deneyim.</p>
                     </div>
                 </div>
@@ -270,18 +365,18 @@
         </div>
     </section>
 
-    <!-- ÖĞRETMEN YORUMLARI BÖLÜMÜ -->
+    <!-- ÖĞRETMEN YORUMLARI COMPONENT -->
     <section id="yorumlar" class="py-24 bg-transparent border-t border-white/5">
         <div class="max-w-7xl mx-auto px-4">
-            <div class="text-center mb-16">
+            <div class="text-center mb-16 anim-fade-push">
                 <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Öğretmenlerimizin Deneyimleri</h2>
                 <p class="text-lg text-slate-400">Sanal Gerçeklik laboratuvarlarımızı sınıflarında uygulayan öğretmenlerin değerlendirmeleri.</p>
             </div>
 
             <div class="grid md:grid-cols-3 gap-8">
                 <!-- Fizik Yorumu -->
-                <div class="glass-card p-8 rounded-2xl flex flex-col relative">
-                    <div class="absolute -top-5 right-8 bg-blue-500/20 text-blue-400 p-3 rounded-full border border-blue-500/30">
+                <div class="glass-card p-8 rounded-2xl flex flex-col relative anim-fade-push anim-morph-card" data-delay="0">
+                    <div class="absolute -top-5 right-8 bg-blue-500/20 text-blue-400 p-3 rounded-full border border-blue-500/30 anim-push">
                         <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
                     </div>
                     <div class="flex text-amber-400 mb-4 text-xl">★★★★★</div>
@@ -296,8 +391,8 @@
                 </div>
 
                 <!-- Kimya Yorumu -->
-                <div class="glass-card p-8 rounded-2xl flex flex-col relative">
-                    <div class="absolute -top-5 right-8 bg-orange-500/20 text-orange-400 p-3 rounded-full border border-orange-500/30">
+                <div class="glass-card p-8 rounded-2xl flex flex-col relative anim-fade-push anim-morph-card" data-delay="150">
+                    <div class="absolute -top-5 right-8 bg-orange-500/20 text-orange-400 p-3 rounded-full border border-orange-500/30 anim-push">
                         <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
                     </div>
                     <div class="flex text-amber-400 mb-4 text-xl">★★★★★</div>
@@ -312,9 +407,9 @@
                 </div>
 
                 <!-- Biyoloji Yorumu -->
-                <div class="glass-card p-8 rounded-2xl flex flex-col relative">
-                    <div class="absolute -top-5 right-8 bg-emerald-500/20 text-emerald-400 p-3 rounded-full border border-emerald-500/30">
-                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.432.917-3.995 3.638-3.995 5.849h3.983v10h-9.983z"/></svg>
+                <div class="glass-card p-8 rounded-2xl flex flex-col relative anim-fade-push anim-morph-card" data-delay="300">
+                    <div class="absolute -top-5 right-8 bg-emerald-500/20 text-emerald-400 p-3 rounded-full border border-emerald-500/30 anim-push">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
                     </div>
                     <div class="flex text-amber-400 mb-4 text-xl">★★★★★</div>
                     <p class="text-slate-300 italic mb-8 flex-grow">"Yıllarca öğrencilere lamel altındaki mikroskopta bir şeyler göstermeye çalıştım ama arka sıradakiler hep dersten koptu. OYADSAVTEK VR sayesinde mikroskobu bırakıp direkt hücrenin içine giriyoruz! Mitoz bölünmeyi 3 boyutlu olarak devasa boyutlarda gördüklerindeki o 'Aydınlanma' anı paha biçilemez."</p>
@@ -330,21 +425,20 @@
         </div>
     </section>
 
-    <!-- DESTEKLEYENLER / LOGOLAR BÖLÜMÜ -->
-    <section class="py-16 bg-black/40 border-t border-white/5">
+    <!-- DESTEKLEYENLER / LOGOLAR COMPONENT -->
+    <section class="py-16 bg-black/40 border-t border-white/5 anim-fade-push">
         <div class="max-w-7xl mx-auto px-4 text-center">
             <h4 class="text-sm font-bold text-slate-500 uppercase tracking-wider mb-8">Proje Ortakları ve Destekleyen Kurumlar</h4>
             <div class="flex flex-wrap justify-center items-center gap-8 md:gap-16 opacity-70 grayscale hover:grayscale-0 transition-all duration-500">
-                <!-- LOGOLAR BURADA -->
-                <img src="{{ url_for('static', filename='images/vclapps_erasmus_avrupa_birligi03.png') }}" alt="Erasmus AB 1" class="h-16 md:h-20 object-contain">
-                <img src="{{ url_for('static', filename='images/logo_vclapps-reg-1.svg') }}" alt="VCLapps Logo" class="h-12 md:h-16 object-contain">
-                <img src="{{ url_for('static', filename='images/öyadsavtek.jpeg') }}" alt="ÖYAD SAVTEK Logo" class="h-16 md:h-20 object-contain rounded">
-                <img src="{{ url_for('static', filename='images/vclapps_erasmus_avrupa_birligi02.png') }}" alt="Erasmus AB 2" class="h-16 md:h-20 object-contain">
+                <img src="{{ url_for('static', filename='images/vclapps_erasmus_avrupa_birligi03.png') }}" alt="Erasmus AB 1" class="h-16 md:h-20 object-contain anim-push">
+                <img src="{{ url_for('static', filename='images/logo_vclapps-reg-1.svg') }}" alt="VCLapps Logo" class="h-12 md:h-16 object-contain anim-push">
+                <img src="{{ url_for('static', filename='images/öyadsavtek.jpeg') }}" alt="ÖYAD SAVTEK Logo" class="h-16 md:h-20 object-contain rounded anim-push">
+                <img src="{{ url_for('static', filename='images/vclapps_erasmus_avrupa_birligi02.png') }}" alt="Erasmus AB 2" class="h-16 md:h-20 object-contain anim-push">
             </div>
         </div>
     </section>
 
-    <!-- FOOTER -->
+    <!-- FOOTER COMPONENT -->
     <footer class="bg-black/60 text-slate-400 py-12 border-t border-white/5">
         <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-6">
             <div class="flex items-center gap-2">
@@ -354,5 +448,30 @@
         </div>
     </footer>
 
+    <!-- SCROLL & REVEAL ANIMATION SCRIPT -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: "0px 0px -40px 0px"
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        const delay = parseInt(entry.target.getAttribute("data-delay") || "0", 10);
+                        setTimeout(() => {
+                            entry.target.classList.add("is-visible");
+                        }, delay);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll(".anim-fade-push").forEach((el) => {
+                observer.observe(el);
+            });
+        });
+    </script>
 </body>
 </html>
