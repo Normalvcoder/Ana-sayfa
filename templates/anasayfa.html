@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ÖYADSAVTEK| Geleceğin Fen Laboratuvarı</title>
+    <title>ÖYADSAVTEK | Geleceğin Fen Laboratuvarı</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
@@ -18,12 +18,12 @@
             -webkit-text-fill-color: transparent;
         }
         .glass-nav {
-            background: rgba(9, 5, 20, 0.75);
-            backdrop-filter: blur(12px);
+            background: rgba(9, 5, 20, 0.85);
+            backdrop-filter: blur(16px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         }
         .glass-card {
-            background: rgba(255, 255, 255, 0.03);
+            background: rgba(255, 255, 255, 0.04);
             backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.08);
         }
@@ -31,7 +31,15 @@
         .feature-card:hover img { transform: scale(1.05); }
     </style>
 </head>
-<body class="text-slate-100 antialiased overflow-x-hidden">
+<body class="text-slate-100 antialiased overflow-x-hidden relative">
+
+    <!-- ARKA PLAN VİDEOSU (YARI ŞEFFAF) -->
+    <div class="fixed inset-0 w-full h-full overflow-hidden -z-20 pointer-events-none">
+        <video autoplay loop muted playsinline class="w-full h-full object-cover opacity-25 filter brightness-90 contrast-110">
+            <source src="{{ url_for('static', filename='videos/8439484-uhd_3840_2160_25fps.mp4') }}" type="video/mp4">
+        </video>
+        <div class="absolute inset-0 bg-gradient-to-b from-[#090514]/60 via-[#090514]/80 to-[#090514]"></div>
+    </div>
 
     <!-- NAVİGASYON -->
     <nav class="fixed w-full z-50 glass-nav">
@@ -42,9 +50,10 @@
                 </div>
                 <div class="flex items-center gap-4">
                     <div class="hidden md:flex space-x-8 mr-4">
+                        <a href="#laboratuvarlar" class="text-slate-300 hover:text-white font-medium transition">Laboratuvarlar</a>
                         <a href="#vr-deneyimi" class="text-slate-300 hover:text-white font-medium transition">Neden VR?</a>
                         <a href="#sorunlar" class="text-slate-300 hover:text-white font-medium transition">Çözümlerimiz</a>
-                        <a href="#laboratuvarlar" class="text-slate-300 hover:text-white font-medium transition">Laboratuvarlar</a>
+                        <a href="#yorumlar" class="text-slate-300 hover:text-white font-medium transition">Öğretmen Yorumları</a>
                     </div>
                     {% if session.get('user') %}
                         <a href="{{ url_for('account') }}" class="text-slate-300 hover:text-white font-semibold transition text-sm">
@@ -84,7 +93,6 @@
                     <span class="w-3 h-3 rounded-full bg-red-500"></span>
                     Sınıfınıza Sığan Lab - Demo
                 </div>
-                <!-- VİDEO VE POSTER GÜNCELLENDİ -->
                 <video class="w-full aspect-video object-cover" controls poster="{{ url_for('static', filename='images/Gemini_Generated_Image_gkshoxgkshoxgksh.png') }}">
                     <source src="{{ url_for('static', filename='demo-video.mp4') }}" type="video/mp4">
                     Tarayıcınız video desteklemiyor.
@@ -94,14 +102,62 @@
     </section>
 
     <!-- MEB MÜFREDAT UYUMU -->
-    <section class="bg-white/5 border-y border-white/10 py-8">
+    <section class="bg-white/5 border-y border-white/10 py-8 backdrop-blur-sm">
         <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-center gap-6 text-center md:text-left">
-            <div class="bg-blue-500/10 text-blue-400 p-3 rounded-full">
+            <div class="bg-blue-500/10 text-blue-400 p-3 rounded-full border border-blue-500/20">
                 <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
             </div>
             <div>
                 <h3 class="text-xl font-bold text-slate-200">MEB Müfredatına %100 Uyumlu</h3>
                 <p class="text-slate-400 text-sm">Deneylerimiz MEB kazanımlarına göre özel olarak tasarlanmıştır.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3 BRANŞ - SANAL LABORATUVARLARA GİRİŞ (ÖNE TAŞINDI) -->
+    <section id="laboratuvarlar" class="py-24 bg-transparent">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-5xl font-bold mb-4 text-white">Sanal Laboratuvarlara Giriş</h2>
+                <p class="text-slate-400 text-lg">Keşfetmek istediğiniz branşı seçin.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- FİZİK LAB -->
+                <div class="group rounded-3xl overflow-hidden border border-white/10 shadow-xl relative bg-slate-900">
+                    <img src="{{ url_for('static', filename='images/istockphoto-664198918-1024x1024.jpg') }}" alt="Fizik Lab" class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-40 transition-opacity duration-300">
+                    <div class="p-8 relative z-10 flex flex-col h-full justify-between min-h-[400px]">
+                        <div>
+                            <h3 class="text-3xl font-bold mb-3 text-white">Fizik</h3>
+                            <p class="text-slate-200 mb-4 font-medium">Uzay boşluğunda serbest düşüş, devre yakma korkusu olmadan sonsuz simülasyon ve görünmez dalga boylarını elle tutma imkanı.</p>
+                        </div>
+                        <a href="{{ url_for('fizik_lab') }}" class="inline-block w-full text-center bg-blue-600 hover:bg-blue-500 text-white py-3 rounded-xl font-bold transition shadow-lg shadow-blue-500/30">Fizik Panosuna Git &rarr;</a>
+                    </div>
+                </div>
+
+                <!-- KİMYA LAB -->
+                <div class="group rounded-3xl overflow-hidden border border-white/10 shadow-xl relative bg-slate-900">
+                    <img src="{{ url_for('static', filename='images/istockphoto-990711646-1024x1024.jpg') }}" alt="Kimya Lab" class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-40 transition-opacity duration-300">
+                    <div class="p-8 relative z-10 flex flex-col h-full justify-between min-h-[400px]">
+                        <div>
+                            <h3 class="text-3xl font-bold mb-3 text-white">Kimya</h3>
+                            <p class="text-slate-200 mb-4 font-medium">Sonsuz kimyasal kullanımı, sıfır risk. Tepkimeleri atom seviyesinde izleyin, Na + su gibi tehlikeli reaksiyonları güvenle gözlemleyin.</p>
+                        </div>
+                        <a href="vrkimyalab.html" class="inline-block w-full text-center bg-orange-500 hover:bg-orange-400 text-white py-3 rounded-xl font-bold transition shadow-lg shadow-orange-500/30">Kimya Panosuna Git &rarr;</a>
+                    </div>
+                </div>
+
+                <!-- BİYOLOJİ LAB -->
+                <div class="group rounded-3xl overflow-hidden border border-white/10 shadow-xl relative bg-slate-900">
+                    <img src="{{ url_for('static', filename='images/istockphoto-1089737754-1024x1024.jpg') }}" alt="Biyoloji Lab" class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-40 transition-opacity duration-300">
+                    <div class="p-8 relative z-10 flex flex-col h-full justify-between min-h-[400px]">
+                        <div>
+                            <h3 class="text-3xl font-bold mb-3 text-white">Biyoloji</h3>
+                            <p class="text-slate-200 mb-4 font-medium">Hücrenin içine bizzat girin. Sanal diseksiyon, organel turları ve mitoz bölünmeyi adım adım, renkli ve 100x daha büyük izleyin.</p>
+                        </div>
+                        <a href="vrbiyolojilab.html" class="inline-block w-full text-center bg-emerald-500 hover:bg-emerald-400 text-white py-3 rounded-xl font-bold transition shadow-lg shadow-emerald-500/30">Biyoloji Panosuna Git &rarr;</a>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -214,49 +270,60 @@
         </div>
     </section>
 
-
-    <!-- 3 BRANŞ (İSTOCK FOTOLARI İLE) -->
-    <section id="laboratuvarlar" class="py-24 bg-transparent">
+    <!-- ÖĞRETMEN YORUMLARI BÖLÜMÜ -->
+    <section id="yorumlar" class="py-24 bg-transparent border-t border-white/5">
         <div class="max-w-7xl mx-auto px-4">
             <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-5xl font-bold mb-4 text-white">Sanal Laboratuvarlara Giriş</h2>
-                <p class="text-slate-400 text-lg">Keşfetmek istediğiniz branşı seçin.</p>
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Öğretmenlerimizin Deneyimleri</h2>
+                <p class="text-lg text-slate-400">Sanal Gerçeklik laboratuvarlarımızı sınıflarında uygulayan öğretmenlerin değerlendirmeleri.</p>
             </div>
 
             <div class="grid md:grid-cols-3 gap-8">
-                <!-- FİZİK LAB -->
-                <div class="group rounded-3xl overflow-hidden border border-white/10 shadow-xl relative bg-slate-900">
-                    <img src="{{ url_for('static', filename='images/istockphoto-664198918-1024x1024.jpg') }}" alt="Fizik Lab" class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-40 transition-opacity duration-300">
-                    <div class="p-8 relative z-10 flex flex-col h-full justify-between min-h-[400px]">
+                <!-- Fizik Yorumu -->
+                <div class="glass-card p-8 rounded-2xl flex flex-col relative">
+                    <div class="absolute -top-5 right-8 bg-blue-500/20 text-blue-400 p-3 rounded-full border border-blue-500/30">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+                    </div>
+                    <div class="flex text-amber-400 mb-4 text-xl">★★★★★</div>
+                    <p class="text-slate-300 italic mb-8 flex-grow">"Fizikte soyut kavramları ve vektörleri tahtada anlatmak her zaman zordu. OYADSAVTEK VR sayesinde öğrenciler yerçekimsiz ortamda serbest düşüşü ve elektrik devrelerini elle dokunur gibi deneyimledi. Öğrencilerimin konuyu kavrama hızı katlandı."</p>
+                    <div class="flex items-center gap-4 mt-auto">
+                        <div class="w-12 h-12 bg-blue-500/20 text-blue-400 rounded-full flex items-center justify-center font-bold text-lg border border-blue-500/30">A.Y.</div>
                         <div>
-                            <h3 class="text-3xl font-bold mb-3 text-white">Fizik</h3>
-                            <p class="text-slate-200 mb-4 font-medium">Uzay boşluğunda serbest düşüş, devre yakma korkusu olmadan sonsuz simülasyon ve görünmez dalga boylarını elle tutma imkanı.</p>
+                            <h5 class="font-bold text-slate-100">Ahmet Yılmaz</h5>
+                            <p class="text-sm text-blue-400 font-medium">Fizik Öğretmeni</p>
                         </div>
-                        <a href="{{ url_for('fizik_lab') }}" class="inline-block w-full text-center bg-blue-600 hover:bg-blue-500 text-white py-3 rounded-xl font-bold transition shadow-lg shadow-blue-500/30">Fizik Panosuna Git &rarr;</a>
                     </div>
                 </div>
 
-                <!-- KİMYA LAB -->
-                <div class="group rounded-3xl overflow-hidden border border-white/10 shadow-xl relative bg-slate-900">
-                    <img src="{{ url_for('static', filename='images/istockphoto-990711646-1024x1024.jpg') }}" alt="Kimya Lab" class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-40 transition-opacity duration-300">
-                    <div class="p-8 relative z-10 flex flex-col h-full justify-between min-h-[400px]">
+                <!-- Kimya Yorumu -->
+                <div class="glass-card p-8 rounded-2xl flex flex-col relative">
+                    <div class="absolute -top-5 right-8 bg-orange-500/20 text-orange-400 p-3 rounded-full border border-orange-500/30">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+                    </div>
+                    <div class="flex text-amber-400 mb-4 text-xl">★★★★★</div>
+                    <p class="text-slate-300 italic mb-8 flex-grow">"En büyük korkum tehlikeli reaksiyonlarda bir öğrencinin zarar görmesiydi. Şimdi Sodyumun suyla reaksiyonunu sıfır riskle, üstelik atomik düzeyde izliyoruz. Sarf malzemesi bitti veya tüp yıkama derdi yok. Sınıftaki 30 öğrencinin hepsi deneyi kendi VR gözlüğünden en ön sıradaymış gibi güvenle yapıyor."</p>
+                    <div class="flex items-center gap-4 mt-auto">
+                        <div class="w-12 h-12 bg-orange-500/20 text-orange-400 rounded-full flex items-center justify-center font-bold text-lg border border-orange-500/30">E.K.</div>
                         <div>
-                            <h3 class="text-3xl font-bold mb-3 text-white">Kimya</h3>
-                            <p class="text-slate-200 mb-4 font-medium">Sonsuz kimyasal kullanımı, sıfır risk. Tepkimeleri atom seviyesinde izleyin, Na + su gibi tehlikeli reaksiyonları güvenle gözlemleyin.</p>
+                            <h5 class="font-bold text-slate-100">Elif Kaya</h5>
+                            <p class="text-sm text-orange-400 font-medium">Kimya Öğretmeni</p>
                         </div>
-                        <a href="vrkimyalab.html" class="inline-block w-full text-center bg-orange-500 hover:bg-orange-400 text-white py-3 rounded-xl font-bold transition shadow-lg shadow-orange-500/30">Kimya Panosuna Git &rarr;</a>
                     </div>
                 </div>
 
-                <!-- BİYOLOJİ LAB -->
-                <div class="group rounded-3xl overflow-hidden border border-white/10 shadow-xl relative bg-slate-900">
-                    <img src="{{ url_for('static', filename='images/istockphoto-1089737754-1024x1024.jpg') }}" alt="Biyoloji Lab" class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-40 transition-opacity duration-300">
-                    <div class="p-8 relative z-10 flex flex-col h-full justify-between min-h-[400px]">
+                <!-- Biyoloji Yorumu -->
+                <div class="glass-card p-8 rounded-2xl flex flex-col relative">
+                    <div class="absolute -top-5 right-8 bg-emerald-500/20 text-emerald-400 p-3 rounded-full border border-emerald-500/30">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.432.917-3.995 3.638-3.995 5.849h3.983v10h-9.983z"/></svg>
+                    </div>
+                    <div class="flex text-amber-400 mb-4 text-xl">★★★★★</div>
+                    <p class="text-slate-300 italic mb-8 flex-grow">"Yıllarca öğrencilere lamel altındaki mikroskopta bir şeyler göstermeye çalıştım ama arka sıradakiler hep dersten koptu. OYADSAVTEK VR sayesinde mikroskobu bırakıp direkt hücrenin içine giriyoruz! Mitoz bölünmeyi 3 boyutlu olarak devasa boyutlarda gördüklerindeki o 'Aydınlanma' anı paha biçilemez."</p>
+                    <div class="flex items-center gap-4 mt-auto">
+                        <div class="w-12 h-12 bg-emerald-500/20 text-emerald-400 rounded-full flex items-center justify-center font-bold text-lg border border-emerald-500/30">M.Ş.</div>
                         <div>
-                            <h3 class="text-3xl font-bold mb-3 text-white">Biyoloji</h3>
-                            <p class="text-slate-200 mb-4 font-medium">Hücrenin içine bizzat girin. Sanal diseksiyon, organel turları ve mitoz bölünmeyi adım adım, renkli ve 100x daha büyük izleyin.</p>
+                            <h5 class="font-bold text-slate-100">Mustafa Şen</h5>
+                            <p class="text-sm text-emerald-400 font-medium">Biyoloji Öğretmeni</p>
                         </div>
-                        <a href="vrbiyolojilab.html" class="inline-block w-full text-center bg-emerald-500 hover:bg-emerald-400 text-white py-3 rounded-xl font-bold transition shadow-lg shadow-emerald-500/30">Biyoloji Panosuna Git &rarr;</a>
                     </div>
                 </div>
             </div>
@@ -281,7 +348,7 @@
     <footer class="bg-black/60 text-slate-400 py-12 border-t border-white/5">
         <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-6">
             <div class="flex items-center gap-2">
-                <span class="font-black text-xl text-white">OYAK<span class="text-blue-500">DER</span></span>
+                <span class="font-black text-xl text-white">OYAD<span class="text-blue-500">SAVTEK</span></span>
             </div>
             <p class="text-sm">© 2026 ÖYADSAVTEK Eğitim Teknolojileri. Tüm hakları saklıdır.</p>
         </div>
