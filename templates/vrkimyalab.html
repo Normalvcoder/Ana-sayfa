@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MEB Müfredatı Kimya Deneyleri & VR Laboratuvarı Panosu</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: radial-gradient(circle at top right, #431407, #090514);
+            color: #f8fafc;
+            min-height: 100vh;
+            display: flex;
+            overflow-x: hidden;
+        }
+
+        /* KEYFRAME ANIMATIONS */
+        @keyframes morphOrangeGlow {
+            0%, 100% {
+                border-color: rgba(249, 115, 22, 0.3);
+                box-shadow: 0 10px 30px -10px rgba(249, 115, 22, 0.2);
+            }
+            50% {
+                border-color: rgba(234, 88, 12, 0.5);
+                box-shadow: 0 15px 35px -10px rgba(234, 88, 12, 0.35);
+            }
+        }
+
+        @keyframes fadeInPush {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.97);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .anim-fade-push {
+            animation: fadeInPush 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .glass-card:hover {
+            border-color: rgba(249, 115, 22, 0.4);
+            transform: translateY(-4px);
+        }
+
+        /* Kenar Çubuğu (Sidebar) */
+        .sidebar {
+            width: 370px;
+            background-color: rgba(24, 15, 10, 0.9);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 2rem 1.25rem;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 40;
+        }
+
+        .sidebar-header {
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 1.25rem;
+        }
+
+        .sidebar-header h1 {
+            font-size: 1.35rem;
+            font-weight: 800;
+            background: linear-gradient(90deg, #f97316, #fb923c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.35rem;
+        }
+
+        /* Grade Filter Buttons */
+        .grade-btn {
+            font-size: 0.78rem;
+            font-weight: 700;
+            padding: 0.45rem 0.75rem;
+            border-radius: 9999px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fdba74;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .grade-btn:hover {
+            background: rgba(255, 255, 255, 0.12);
+            color: #ffffff;
+            transform: scale(1.04);
+        }
+
+        .grade-btn.active {
+            background: linear-gradient(135deg, #ea580c, #c2410c);
+            color: #ffffff;
+            border-color: transparent;
+            box-shadow: 0 4px 15px rgba(234, 88, 12, 0.4);
+        }
+
+        .nav-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .nav-item {
+            padding: 0.9rem 1rem;
+            background-color: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .nav-item:hover {
+            background-color: rgba(255, 255, 255, 0.08);
+            transform: translateX(4px);
+            border-color: rgba(249, 115, 22, 0.4);
+        }
+
+        .nav-item.active {
+            background: linear-gradient(135deg, rgba(194, 65, 12, 0.4), rgba(124, 45, 18, 0.4));
+            border-left: 4px solid #f97316;
+            border-color: rgba(249, 115, 22, 0.6);
+            box-shadow: 0 10px 25px -5px rgba(249, 115, 22, 0.25);
+        }
+
+        .user-status-container {
+            margin-top: auto;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .back-btn {
+            display: inline-block;
+            text-align: center;
+            padding: 0.65rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            color: #fed7aa;
+            text-decoration: none;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.25s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.12);
+            color: #ffffff;
+            transform: translateY(-2px);
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 370px;
+            flex: 1;
+            padding: 2.5rem;
+            max-width: 1000px;
+        }
+
+        .welcome-panel {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(16px);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .detail-card {
+            display: none;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 2.25rem;
+            margin-bottom: 2rem;
+            animation: morphOrangeGlow 4s infinite alternate;
+        }
+
+        .detail-card.active {
+            display: block;
+            animation: fadeInPush 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .topic-badge {
+            background: rgba(249, 115, 22, 0.12);
+            color: #fb923c;
+            border: 1px solid rgba(249, 115, 22, 0.3);
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            display: inline-block;
+            margin-bottom: 0.75rem;
+        }
+
+        .vr-box {
+            background: linear-gradient(135deg, rgba(194, 65, 12, 0.2), rgba(124, 45, 18, 0.2));
+            border: 1px solid rgba(249, 115, 22, 0.3);
+            border-radius: 16px;
+            padding: 1.25rem 1.5rem;
+            color: #ffedd5;
+            font-size: 0.95rem;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- KENAR ÇUBUĞU (SIDEBAR) -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h1>🧪 MEB Kimya Deneyleri</h1>
+            <p class="text-xs text-orange-200/70">Sınıf Seviyesine ve Konulara Göre Deney Panosu</p>
+        </div>
+
+        <!-- SINIF (GRADE) FİLTRELERİ -->
+        <div class="mb-5">
+            <div class="text-xs font-bold text-orange-300 uppercase tracking-wider mb-2.5">Sınıf Seviyesi Seçin</div>
+            <div class="flex flex-wrap gap-1.5" id="gradeFilterContainer">
+                <button class="grade-btn active" onclick="filterByGrade('all', this)">Tümü</button>
+                <button class="grade-btn" onclick="filterByGrade('9', this)">9. Sınıf</button>
+                <button class="grade-btn" onclick="filterByGrade('10', this)">10. Sınıf</button>
+                <button class="grade-btn" onclick="filterByGrade('11', this)">11. Sınıf</button>
+                <button class="grade-btn" onclick="filterByGrade('12', this)">12. Sınıf</button>
+            </div>
+        </div>
+
+        <!-- DENEY LİSTESİ -->
+        <div class="text-xs font-bold text-orange-300 uppercase tracking-wider mb-2">Deneyler</div>
+        <ul class="nav-list" id="expNavList">
+            
+            <!-- 9. SINIF DENEYLERİ -->
+            <li class="nav-item active" data-grade="9" data-exp-id="exp-1" onclick="showExperiment('exp-1', this)">
+                <div class="text-xs font-bold text-orange-400 mb-0.5">Konu: Kimya Bilimi</div>
+                <h3 class="text-sm font-bold text-white">1. Lab Güvenliği ve Malzeme Tanıma</h3>
+                <span class="text-xs bg-orange-500/20 text-orange-300 px-2 py-0.5 rounded mt-1 inline-block">9. Sınıf</span>
+            </li>
+
+            <li class="nav-item" data-grade="9" data-exp-id="exp-2" onclick="showExperiment('exp-2', this)">
+                <div class="text-xs font-bold text-orange-400 mb-0.5">Konu: Atom ve Periyodik Sistem</div>
+                <h3 class="text-sm font-bold text-white">2. Alev Testi ve Atom İnşası</h3>
+                <span class="text-xs bg-orange-500/20 text-orange-300 px-2 py-0.5 rounded mt-1 inline-block">9. Sınıf</span>
+            </li>
+
+            <!-- 10. SINIF DENEYLERİ -->
+            <li class="nav-item" data-grade="10" data-exp-id="exp-3" onclick="showExperiment('exp-3', this)">
+                <div class="text-xs font-bold text-amber-400 mb-0.5">Konu: Karışımlar</div>
+                <h3 class="text-sm font-bold text-white">3. Ayrımsal Damıtma & Tyndall Etkisi</h3>
+                <span class="text-xs bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded mt-1 inline-block">10. Sınıf</span>
+            </li>
+
+            <li class="nav-item" data-grade="10" data-exp-id="exp-4" onclick="showExperiment('exp-4', this)">
+                <div class="text-xs font-bold text-amber-400 mb-0.5">Konu: Asitler, Bazlar ve Tuzlar</div>
+                <h3 class="text-sm font-bold text-white">4. pH Tayini ve Metallere Etkisi</h3>
+                <span class="text-xs bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded mt-1 inline-block">10. Sınıf</span>
+            </li>
+
+            <!-- 11. SINIF DENEYLERİ -->
+            <li class="nav-item" data-grade="11" data-exp-id="exp-5" onclick="showExperiment('exp-5', this)">
+                <div class="text-xs font-bold text-rose-400 mb-0.5">Konu: Modern Atom Teorisi</div>
+                <h3 class="text-sm font-bold text-white">5. 3D Orbital Şekilleri Keşfi</h3>
+                <span class="text-xs bg-rose-500/20 text-rose-300 px-2 py-0.5 rounded mt-1 inline-block">11. Sınıf</span>
+            </li>
+
+            <li class="nav-item" data-grade="11" data-exp-id="exp-6" onclick="showExperiment('exp-6', this)">
+                <div class="text-xs font-bold text-rose-400 mb-0.5">Konu: Gazlar ve Tepkime Hızı</div>
+                <h3 class="text-sm font-bold text-white">6. İdeal Gaz Kanunları & Çarpışma</h3>
+                <span class="text-xs bg-rose-500/20 text-rose-300 px-2 py-0.5 rounded mt-1 inline-block">11. Sınıf</span>
+            </li>
+
+            <!-- 12. SINIF DENEYLERİ -->
+            <li class="nav-item" data-grade="12" data-exp-id="exp-7" onclick="showExperiment('exp-7', this)">
+                <div class="text-xs font-bold text-yellow-400 mb-0.5">Konu: Elektrokimya</div>
+                <h3 class="text-sm font-bold text-white">7. Galvanik Pil Hücresi Kurulumu</h3>
+                <span class="text-xs bg-yellow-500/20 text-yellow-300 px-2 py-0.5 rounded mt-1 inline-block">12. Sınıf</span>
+            </li>
+
+            <li class="nav-item" data-grade="12" data-exp-id="exp-8" onclick="showExperiment('exp-8', this)">
+                <div class="text-xs font-bold text-yellow-400 mb-0.5">Konu: Organik Kimya</div>
+                <h3 class="text-sm font-bold text-white">8. 3D Organik Molekül & Kiralite</h3>
+                <span class="text-xs bg-yellow-500/20 text-yellow-300 px-2 py-0.5 rounded mt-1 inline-block">12. Sınıf</span>
+            </li>
+
+        </ul>
+
+        <div class="user-status-container">
+            {% if session.get('user') %}
+            <div style="font-size: 0.85rem; color: #fed7aa;">
+                Giriş Yapan: <strong style="color: #fb923c;">{{ session['user']['username'] }}</strong>
+            </div>
+            {% endif %}
+            <a href="{{ url_for('home') }}" class="back-btn">
+                &larr; Ana Sayfaya Dön
+            </a>
+        </div>
+    </div>
+
+    <!-- ANA İÇERİK ALANI -->
+    <div class="main-content">
+        <div class="welcome-panel anim-fade-push">
+            <div class="flex items-center gap-3 mb-2">
+                <span class="text-2xl">⚗️</span>
+                <h2 class="text-2xl font-extrabold text-white">Kimya Deneyleri Keşif Panosu</h2>
+            </div>
+            <p class="text-orange-200/70 text-sm leading-relaxed">
+                Deneyler önce <strong>Sınıf Seviyesine (9, 10, 11, 12. Sınıf)</strong>, ardından <strong>Müfredat Konularına</strong> göre kategorize edilmiştir. Sol taraftaki sınıf filtrelerini kullanarak deneyleri inceleyebilirsiniz.
+            </p>
+        </div>
+
+        <!-- 9. SINIF DENEY KARTLARI -->
+        
+        <!-- DENEY 1 -->
+        <div id="exp-1" class="detail-card active">
+            <div class="flex justify-between items-start mb-4 border-b border-white/10 pb-4">
+                <div>
+                    <span class="topic-badge">Konu: Kimya Bilimi</span>
+                    <h2 class="text-2xl font-extrabold text-white">Lab Güvenliği ve Malzeme Tanıma</h2>
+                </div>
+                <span class="px-3 py-1 bg-orange-500/20 text-orange-300 border border-orange-500/30 text-xs font-bold rounded-full">9. Sınıf</span>
+            </div>
+            <div class="mb-6">
+                <h4 class="text-sm font-bold text-orange-300 uppercase tracking-wider mb-2">Deneyin Konusu ve Kapsamı</h4>
+                <p class="text-slate-200 leading-relaxed text-base">
+                    Tehlikeli asit dökülmesi, yanlış karıştırma gibi senaryoları sıfır riskle deneyimleme; laboratuvar malzemelerini sanal olarak kullanma.
+                </p>
+            </div>
+            <div>
+                <h4 class="text-sm font-bold text-orange-400 uppercase tracking-wider mb-2 flex items-center gap-2">
+                    <span>🥽</span> VR (Sanal Gerçeklik) Kullanım Avantajları
+                </h4>
+                <div class="vr-box">
+                    Zehirli asit veya yanıcı maddelerin neden olabileceği kazaları sıfır riskle test etme, kırılma riski olmadan hassas sanal cam eşyaları serbestçe deneme imkanı.
+                </div>
+            </div>
+        </div>
+
+        <!-- DENEY 2 -->
+        <div id="exp-2" class="detail-card">
+            <div class="flex justify-between items-start mb-4 border-b border-white/10 pb-4">
+                <div>
+                    <span class="topic-badge">Konu: Atom ve Periyodik Sistem</span>
+                    <h2 class="text-2xl font-extrabold text-white">Alev Testi ve Atom İnşası</h2>
+                </div>
+                <span class="px-3 py-1 bg-orange-500/20 text-orange-300 border border-orange-500/30 text-xs font-bold rounded-full">9. Sınıf</span>
+            </div>
+            <div class="mb-6">
+                <h4 class="text-sm font-bold text-orange-300 uppercase tracking-wider mb-2">Deneyin Konusu ve Kapsamı</h4>
+                <p class="text-slate-200 leading-relaxed text-base">
+                    Element tuzlarını bunzen beki alevine tutarak yayılan 3D ışık tayfını gözlemleme; proton/nötronları elleriyle yerleştirerek atom üretme.
+                </p>
+            </div>
+            <div>
+                <h4 class="text-sm font-bold text-orange-400 uppercase tracking-wider mb-2 flex items-center gap-2">
+                    <span>🥽</span> VR (Sanal Gerçeklik) Kullanım Avantajları
+                </h4>
+                <div class="vr-box">
+                    Görünmeyen emisyon ve emilim tayf spektrumunu 3D uzayda canlı dalga boylarıyla izleme, proton, nötron ve elektronları atomik düzeyde elle birleştirme imkanı.
+                </div>
+            </div>
+        </div>
+
+        <!-- 10. SINIF DENEY KARTLARI -->
+
+        <!-- DENEY 3 -->
+        <div id="exp-3" class="detail-card">
+            <div class="flex justify-between items-start mb-4 border-b border-white/10 pb-4">
+                <div>
+                    <span class="topic-badge" style="color: #fbbf24; border-color: rgba(251, 191, 36, 0.3); background: rgba(251, 191, 36, 0.1);">Konu: Karışımlar</span>
+                    <h2 class="text-2xl font-extrabold text-white">Ayrımsal Damıtma & Tyndall Etkisi</h2>
+                </div>
+                <span class="px-3 py-1 bg-amber-500/20 text-amber-300 border border-amber-500/30 text-xs font-bold rounded-full">10. Sınıf</span>
+            </div>
+            <div class="mb-6">
+                <h4 class="text-sm font-bold text-amber-300 uppercase tracking-wider mb-2">Deneyin Konusu ve Kapsamı</h4>
+                <p class="text-slate-200 leading-relaxed text-base">
+                    Sanal petrol kulesi inşa etme; kaynama noktası farkıyla sıvıları ayırma. Çözeltilere lazer tutarak Tyndall ışık saçılmasını inceleme.
+                </p>
+            </div>
+            <div>
+                <h4 class="text-sm font-bold text-amber-400 uppercase tracking-wider mb-2 flex items-center gap-2">
+                    <span>🥽</span> VR (Sanal Gerçeklik) Kullanım Avantajları
+                </h4>
+                <div class="vr-box">
+                    Karmaşık sanal petrol damıtma kulesini 3D adımlarla kurma, sıvı moleküllerinin gazlaşma sıcaklıklarını ve heterojen süspansiyonlardaki lazer saçılma açılarını canlı takip etme imkanı.
+                </div>
+            </div>
+        </div>
+
+        <!-- DENEY 4 -->
+        <div id="exp-4" class="detail-card">
+            <div class="flex justify-between items-start mb-4 border-b border-white/10 pb-4">
+                <div>
+                    <span class="topic-badge" style="color: #fbbf24; border-color: rgba(251, 191, 36, 0.3); background: rgba(251, 191, 36, 0.1);">Konu: Asitler, Bazlar ve Tuzlar</span>
+                    <h2 class="text-2xl font-extrabold text-white">pH Tayini ve Metallere Etkisi</h2>
+                </div>
+                <span class="px-3 py-1 bg-amber-500/20 text-amber-300 border border-amber-500/30 text-xs font-bold rounded-full">10. Sınıf</span>
+            </div>
+            <div class="mb-6">
+                <h4 class="text-sm font-bold text-amber-300 uppercase tracking-wider mb-2">Deneyin Konusu ve Kapsamı</h4>
+                <p class="text-slate-200 leading-relaxed text-base">
+                    Günlük malzemelerin pH değerini ölçme. Güçlü asitlerin metalleri eritme sürecini moleküler seviyede gözlemleme.
+                </p>
+            </div>
+            <div>
+                <h4 class="text-sm font-bold text-amber-400 uppercase tracking-wider mb-2 flex items-center gap-2">
+                    <span>🥽</span> VR (Sanal Gerçeklik) Kullanım Avantajları
+                </h4>
+                <div class="vr-box">
+                    Asit moleküllerinin metal yüzeyindeki H+ iyon değişimini ve korozyon tepkimesini atomik ölçekte 3D animasyonla izleme; turnusol indikatör renk skalasını anlık analiz etme.
+                </div>
+            </div>
+        </div>
+
+        <!-- 11. SINIF DENEY KARTLARI -->
+
+        <!-- DENEY 5 -->
+        <div id="exp-5" class="detail-card">
+            <div class="flex justify-between items-start mb-4 border-b border-white/10 pb-4">
+                <div>
+                    <span class="topic-badge" style="color: #f43f5e; border-color: rgba(244, 63, 94, 0.3); background: rgba(244, 63, 94, 0.1);">Konu: Modern Atom Teorisi</span>
+                    <h2 class="text-2xl font-extrabold text-white">3D Orbital Şekilleri Keşfi</h2>
+                </div>
+                <span class="px-3 py-1 bg-rose-500/20 text-rose-300 border border-rose-500/30 text-xs font-bold rounded-full">11. Sınıf</span>
+            </div>
+            <div class="mb-6">
+                <h4 class="text-sm font-bold text-rose-300 uppercase tracking-wider mb-2">Deneyin Konusu ve Kapsamı</h4>
+                <p class="text-slate-200 leading-relaxed text-base">
+                    s, p, d ve f orbitallerini, elektronların olasılık bulutlarını 3D uzayda kendi eksenlerinde döndürerek derinlemesine inceleme.
+                </p>
+            </div>
+            <div>
+                <h4 class="text-sm font-bold text-rose-400 uppercase tracking-wider mb-2 flex items-center gap-2">
+                    <span>🥽</span> VR (Sanal Gerçeklik) Kullanım Avantajları
+                </h4>
+                <div class="vr-box">
+                    Soyut olan 3 boyutlu elektron olasılık bulutlarını (s, p, d, f orbitallerini) sanal alanda elinizle döndürüp düğüm düzlemlerinin içine girerek inceleme imkanı.
+                </div>
+            </div>
+        </div>
+
+        <!-- DENEY 6 -->
+        <div id="exp-6" class="detail-card">
+            <div class="flex justify-between items-start mb-4 border-b border-white/10 pb-4">
+                <div>
+                    <span class="topic-badge" style="color: #f43f5e; border-color: rgba(244, 63, 94, 0.3); background: rgba(244, 63, 94, 0.1);">Konu: Gazlar ve Tepkime Hızı</span>
+                    <h2 class="text-2xl font-extrabold text-white">İdeal Gaz Kanunları & Çarpışma</h2>
+                </div>
+                <span class="px-3 py-1 bg-rose-500/20 text-rose-300 border border-rose-500/30 text-xs font-bold rounded-full">11. Sınıf</span>
+            </div>
+            <div class="mb-6">
+                <h4 class="text-sm font-bold text-rose-300 uppercase tracking-wider mb-2">Deneyin Konusu ve Kapsamı</h4>
+                <p class="text-slate-200 leading-relaxed text-base">
+                    Sanal pistonda sıcaklığı artırıp moleküllerin çarpmalarını izleme. Reaktif moleküllerini doğru açı/hızla çarpıştırıp tepkime başlatma.
+                </p>
+            </div>
+            <div>
+                <h4 class="text-sm font-bold text-rose-400 uppercase tracking-wider mb-2 flex items-center gap-2">
+                    <span>🥽</span> VR (Sanal Gerçeklik) Kullanım Avantajları
+                </h4>
+                <div class="vr-box">
+                    Piston hacmini, molekül hızını ve etkin çarpışma açılarını değiştirerek aktivasyon enerjisinin aşılmasını ve tepkime hızını canlı mikro gözlemle kavrama.
+                </div>
+            </div>
+        </div>
+
+        <!-- 12. SINIF DENEY KARTLARI -->
+
+        <!-- DENEY 7 -->
+        <div id="exp-7" class="detail-card">
+            <div class="flex justify-between items-start mb-4 border-b border-white/10 pb-4">
+                <div>
+                    <span class="topic-badge" style="color: #eab308; border-color: rgba(234, 179, 8, 0.3); background: rgba(234, 179, 8, 0.1);">Konu: Elektrokimya</span>
+                    <h2 class="text-2xl font-extrabold text-white">Galvanik Pil Hücresi Kurulumu</h2>
+                </div>
+                <span class="px-3 py-1 bg-yellow-500/20 text-yellow-300 border border-yellow-500/30 text-xs font-bold rounded-full">12. Sınıf</span>
+            </div>
+            <div class="mb-6">
+                <h4 class="text-sm font-bold text-yellow-300 uppercase tracking-wider mb-2">Deneyin Konusu ve Kapsamı</h4>
+                <p class="text-slate-200 leading-relaxed text-base">
+                    Çinko ve bakır elektrotlarla pil kurma. Elektronların teldeki akışını ve tuz köprüsündeki iyon hareketini eş zamanlı izleme.
+                </p>
+            </div>
+            <div>
+                <h4 class="text-sm font-bold text-yellow-400 uppercase tracking-wider mb-2 flex items-center gap-2">
+                    <span>🥽</span> VR (Sanal Gerçeklik) Kullanım Avantajları
+                </h4>
+                <div class="vr-box">
+                    Anot ve katot yarı hücrelerindeki elektron akışını tel üzerinde, iyon dengesini ise tuz köprüsünün içinde hareket ederken canlı 3D simülasyon olarak izleme.
+                </div>
+            </div>
+        </div>
+
+        <!-- DENEY 8 -->
+        <div id="exp-8" class="detail-card">
+            <div class="flex justify-between items-start mb-4 border-b border-white/10 pb-4">
+                <div>
+                    <span class="topic-badge" style="color: #eab308; border-color: rgba(234, 179, 8, 0.3); background: rgba(234, 179, 8, 0.1);">Konu: Organik Kimya</span>
+                    <h2 class="text-2xl font-extrabold text-white">3D Organik Molekül & Kiralite</h2>
+                </div>
+                <span class="px-3 py-1 bg-yellow-500/20 text-yellow-300 border border-yellow-500/30 text-xs font-bold rounded-full">12. Sınıf</span>
+            </div>
+            <div class="mb-6">
+                <h4 class="text-sm font-bold text-yellow-300 uppercase tracking-wider mb-2">Deneyin Konusu ve Kapsamı</h4>
+                <p class="text-slate-200 leading-relaxed text-base">
+                    Hibritleşmeye göre karbon atomlarına gruplar bağlama. Sağ ve sol el enantiyomer molekülleri üst üste koyarak kiraliteyi kavrama.
+                </p>
+            </div>
+            <div>
+                <h4 class="text-sm font-bold text-yellow-400 uppercase tracking-wider mb-2 flex items-center gap-2">
+                    <span>🥽</span> VR (Sanal Gerçeklik) Kullanım Avantajları
+                </h4>
+                <div class="vr-box">
+                    sp, sp², sp³ hibrit orbitallerini 3D uzayda karbon çekirdeğine bağlama, çakışmayan ayna görüntüsü enantiyomer molekülleri üst üste getirip stereo-kiraliteyi ellerinizle deneyimleme.
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- SCRIPT FOR GRADE FILTERING AND EXPERIMENT TABS -->
+    <script>
+        function filterByGrade(grade, btnElement) {
+            // Update active grade button styling
+            const buttons = document.querySelectorAll('.grade-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            btnElement.classList.add('active');
+
+            // Filter sidebar nav items
+            const navItems = document.querySelectorAll('#expNavList .nav-item');
+            let firstVisibleItem = null;
+
+            navItems.forEach(item => {
+                const itemGrade = item.getAttribute('data-grade');
+                if (grade === 'all' || itemGrade === grade) {
+                    item.style.display = 'block';
+                    if (!firstVisibleItem) firstVisibleItem = item;
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+
+            // If currently active item is hidden, auto-select the first visible experiment
+            const activeNav = document.querySelector('#expNavList .nav-item.active');
+            if (activeNav && activeNav.style.display === 'none' && firstVisibleItem) {
+                const expId = firstVisibleItem.getAttribute('data-exp-id');
+                showExperiment(expId, firstVisibleItem);
+            }
+        }
+
+        function showExperiment(id, element) {
+            // Update active nav item
+            const items = document.querySelectorAll('.nav-item');
+            items.forEach(item => item.classList.remove('active'));
+            element.classList.add('active');
+
+            // Show selected detail card with animation
+            const cards = document.querySelectorAll('.detail-card');
+            cards.forEach(card => {
+                card.classList.remove('active');
+                if (card.id === id) {
+                    card.classList.add('active');
+                }
+            });
+        }
+    </script>
+</body>
+</html>

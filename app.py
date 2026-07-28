@@ -40,6 +40,11 @@ def home():
 def fizik_lab():
     return render_template('vrfiziklab.html')
 
+@app.route('/kimyalab')
+@app.route('/vrkimyalab.html')
+def kimya_lab():
+    return render_template('vrkimyalab.html')
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if 'user' in session:
