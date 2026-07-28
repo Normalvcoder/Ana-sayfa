@@ -33,14 +33,6 @@
 </head>
 <body class="text-slate-100 antialiased overflow-x-hidden relative">
 
-    <!-- ARKA PLAN VİDEOSU (YARI ŞEFFAF) -->
-    <div class="fixed inset-0 w-full h-full overflow-hidden -z-20 pointer-events-none">
-        <video autoplay loop muted playsinline class="w-full h-full object-cover opacity-25 filter brightness-90 contrast-110">
-            <source src="{{ url_for('static', filename='videos/8439484-uhd_3840_2160_25fps.mp4') }}" type="video/mp4">
-        </video>
-        <div class="absolute inset-0 bg-gradient-to-b from-[#090514]/60 via-[#090514]/80 to-[#090514]"></div>
-    </div>
-
     <!-- NAVİGASYON -->
     <nav class="fixed w-full z-50 glass-nav">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -73,9 +65,17 @@
     </nav>
 
     <!-- HERO (KAHRAMAN) BÖLÜMÜ -->
-    <section class="pt-32 pb-20 lg:pt-48 lg:pb-24 px-4 text-center relative">
+    <section class="pt-32 pb-20 lg:pt-48 lg:pb-24 px-4 text-center relative overflow-hidden">
+        <!-- Arka Plan Videosu (Yalnızca Başlık/Hero Bölümünde & Daha Belirgin) -->
+        <div class="absolute inset-0 w-full h-full -z-10 pointer-events-none overflow-hidden">
+            <video autoplay loop muted playsinline class="w-full h-full object-cover opacity-50 filter brightness-95 contrast-105">
+                <source src="{{ url_for('static', filename='videos/8439484-uhd_3840_2160_25fps.mp4') }}" type="video/mp4">
+            </video>
+            <div class="absolute inset-0 bg-gradient-to-b from-[#090514]/40 via-[#090514]/65 to-[#090514]"></div>
+        </div>
+
         <div class="absolute w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[120px] top-1/4 left-1/4 -z-10 animate-pulse"></div>
-        <div class="max-w-4xl mx-auto">
+        <div class="max-w-4xl mx-auto relative z-10">
             <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/10 text-blue-300 font-semibold text-sm mb-6 border border-blue-500/20">
                 <span class="flex h-2 w-2 rounded-full bg-blue-500 animate-pulse"></span>
                 Pasif Öğrenmeden Aktif Deneyime
