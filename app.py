@@ -29,9 +29,6 @@ def admin_required(f):
     return decorated_function
 
 @app.route('/')
-def intro():
-    return render_template('intro.html')
-
 @app.route('/anasayfa')
 def home():
     return render_template('anasayfa.html')
@@ -75,7 +72,7 @@ def login():
 def logout():
     session.pop('user', None)
     flash('Başarıyla çıkış yapıldı.', 'success')
-    return redirect(url_for('intro'))
+    return redirect(url_for('home'))
 
 @app.route('/account')
 @login_required
