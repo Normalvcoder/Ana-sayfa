@@ -168,7 +168,7 @@
         <div class="absolute w-[500px] h-[500px] bg-blue-600/15 rounded-full blur-[120px] top-1/4 left-1/4 -z-10 anim-morph-bg"></div>
         <div class="absolute w-[450px] h-[450px] bg-purple-600/15 rounded-full blur-[110px] bottom-1/4 right-1/4 -z-10 anim-morph-bg" style="animation-delay: -7s;"></div>
 
-        <div class="max-w-4xl mx-auto relative z-10">
+        <div class="max-w-7xl mx-auto relative z-10">
             <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight mb-4 text-white anim-fade-push" data-delay="100">
                 Geleceğin <span class="gradient-text">Fen Laboratuvarı</span>
             </h1>
@@ -177,16 +177,43 @@
                 Labınız artık sınıfınızın içinde. Güvenli, sınırsız ve herkes için eşit bilimsel deneyim.
             </p>
             
-            <!-- Ana Video / Demo Alanı -->
-            <div class="relative max-w-xl mx-auto rounded-xl overflow-hidden shadow-2xl border-2 border-white/10 bg-slate-900 group anim-fade-push anim-morph-card" data-delay="300">
-                <div class="absolute top-3 left-3 z-10 bg-black/60 backdrop-blur-md text-white px-3 py-1 rounded-md text-xs font-semibold flex items-center gap-2">
-                    <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
-                    Sınıfınıza Sığan Lab - Demo
+            <!-- 3 BRANŞ - SANAL LABORATUVARLAR (HERO İÇİNDE İLK SAYFADA) -->
+            <div id="laboratuvarlar" class="grid md:grid-cols-3 gap-6 text-left mt-6">
+                <!-- FİZİK LAB CARD -->
+                <div class="group rounded-2xl overflow-hidden border border-white/10 shadow-xl relative bg-slate-900 anim-fade-push anim-morph-card" data-delay="300">
+                    <img src="{{ url_for('static', filename='images/fizik2.png') }}" alt="Fizik Lab" class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-40 transition-opacity duration-500">
+                    <div class="p-6 relative z-10 flex flex-col h-full justify-between min-h-[320px]">
+                        <div>
+                            <h3 class="text-2xl font-bold mb-2 text-white">Fizik</h3>
+                            <p class="text-slate-200 mb-4 text-sm font-medium">Uzay boşluğunda serbest düşüş, devre yakma korkusu olmadan sonsuz simülasyon ve görünmez dalga boylarını elle tutma imkanı.</p>
+                        </div>
+                        <a href="{{ url_for('fizik_lab') }}" class="inline-block w-full text-center bg-blue-600 hover:bg-blue-500 text-white py-2.5 rounded-xl font-bold transition shadow-lg shadow-blue-500/30 anim-push">Fizik Panosuna Git &rarr;</a>
+                    </div>
                 </div>
-                <video class="w-full aspect-video max-h-[260px] object-cover" controls poster="{{ url_for('static', filename='images/ideal fizik modelleri.jpg') }}">
-                    <source src="{{ url_for('static', filename='demo-video.mp4') }}" type="video/mp4">
-                    Tarayıcınız video desteklemiyor.
-                </video>
+
+                <!-- KİMYA LAB CARD -->
+                <div class="group rounded-2xl overflow-hidden border border-white/10 shadow-xl relative bg-slate-900 anim-fade-push anim-morph-card" data-delay="400">
+                    <img src="{{ url_for('static', filename='images/Kimya2.png') }}" alt="Kimya Lab" class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-40 transition-opacity duration-500">
+                    <div class="p-6 relative z-10 flex flex-col h-full justify-between min-h-[320px]">
+                        <div>
+                            <h3 class="text-2xl font-bold mb-2 text-white">Kimya</h3>
+                            <p class="text-slate-200 mb-4 text-sm font-medium">Sonsuz kimyasal kullanımı, sıfır risk. Tepkimeleri atom seviyesinde izleyin, Na + su gibi tehlikeli reaksiyonları güvenle gözlemleyin.</p>
+                        </div>
+                        <a href="{{ url_for('kimya_lab') }}" class="inline-block w-full text-center bg-orange-500 hover:bg-orange-400 text-white py-2.5 rounded-xl font-bold transition shadow-lg shadow-orange-500/30 anim-push">Kimya Panosuna Git &rarr;</a>
+                    </div>
+                </div>
+
+                <!-- BİYOLOJİ LAB CARD -->
+                <div class="group rounded-2xl overflow-hidden border border-white/10 shadow-xl relative bg-slate-900 anim-fade-push anim-morph-card" data-delay="500">
+                    <img src="{{ url_for('static', filename='images/Biyoloji2.png') }}" alt="Biyoloji Lab" class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-40 transition-opacity duration-500">
+                    <div class="p-6 relative z-10 flex flex-col h-full justify-between min-h-[320px]">
+                        <div>
+                            <h3 class="text-2xl font-bold mb-2 text-white">Biyoloji</h3>
+                            <p class="text-slate-200 mb-4 text-sm font-medium">Hücrenin içine bizzat girin. Sanal diseksiyon, organel turları ve mitoz bölünmeyi adım adım, renkli ve 100x daha büyük izleyin.</p>
+                        </div>
+                        <a href="{{ url_for('biyoloji_lab') }}" class="inline-block w-full text-center bg-emerald-500 hover:bg-emerald-400 text-white py-2.5 rounded-xl font-bold transition shadow-lg shadow-emerald-500/30 anim-push">Biyoloji Panosuna Git &rarr;</a>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -204,50 +231,23 @@
         </div>
     </section>
 
-    <!-- 3 BRANŞ - SANAL LABORATUVARLARA GİRİŞ COMPONENT -->
-    <section id="laboratuvarlar" class="py-10 bg-transparent">
+    <!-- DEMO VİDEO BÖLÜMÜ -->
+    <section id="demo-video" class="py-16 bg-transparent">
         <div class="max-w-7xl mx-auto px-4">
-            <div class="text-center mb-8 anim-fade-push">
-                <h2 class="text-2xl md:text-4xl font-bold mb-2 text-white">Sanal Laboratuvarlara Giriş</h2>
-                <p class="text-slate-400 text-sm">Keşfetmek istediğiniz branşı seçin.</p>
+            <div class="text-center mb-10 anim-fade-push">
+                <h2 class="text-2xl md:text-4xl font-bold mb-2 text-white">Sınıfınıza Sığan Laboratuvar - Demo</h2>
+                <p class="text-slate-400 text-sm">Sanal Gerçeklik laboratuvarlarımızın tanıtım videosunu izleyin.</p>
             </div>
 
-            <div class="grid md:grid-cols-3 gap-6">
-                <!-- FİZİK LAB CARD -->
-                <div class="group rounded-2xl overflow-hidden border border-white/10 shadow-xl relative bg-slate-900 anim-fade-push anim-morph-card" data-delay="0">
-                    <img src="{{ url_for('static', filename='images/fizik2.png') }}" alt="Fizik Lab" class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-40 transition-opacity duration-500">
-                    <div class="p-6 relative z-10 flex flex-col h-full justify-between min-h-[320px]">
-                        <div>
-                            <h3 class="text-2xl font-bold mb-2 text-white">Fizik</h3>
-                            <p class="text-slate-200 mb-4 text-sm font-medium">Uzay boşluğunda serbest düşüş, devre yakma korkusu olmadan sonsuz simülasyon ve görünmez dalga boylarını elle tutma imkanı.</p>
-                        </div>
-                        <a href="{{ url_for('fizik_lab') }}" class="inline-block w-full text-center bg-blue-600 hover:bg-blue-500 text-white py-2.5 rounded-xl font-bold transition shadow-lg shadow-blue-500/30 anim-push">Fizik Panosuna Git &rarr;</a>
-                    </div>
+            <div class="relative max-w-2xl mx-auto rounded-xl overflow-hidden shadow-2xl border-2 border-white/10 bg-slate-900 group anim-fade-push anim-morph-card" data-delay="200">
+                <div class="absolute top-3 left-3 z-10 bg-black/60 backdrop-blur-md text-white px-3 py-1 rounded-md text-xs font-semibold flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+                    Sınıfınıza Sığan Lab - Demo
                 </div>
-
-                <!-- KİMYA LAB CARD -->
-                <div class="group rounded-2xl overflow-hidden border border-white/10 shadow-xl relative bg-slate-900 anim-fade-push anim-morph-card" data-delay="150">
-                    <img src="{{ url_for('static', filename='images/Kimya2.png') }}" alt="Kimya Lab" class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-40 transition-opacity duration-500">
-                    <div class="p-6 relative z-10 flex flex-col h-full justify-between min-h-[320px]">
-                        <div>
-                            <h3 class="text-2xl font-bold mb-2 text-white">Kimya</h3>
-                            <p class="text-slate-200 mb-4 text-sm font-medium">Sonsuz kimyasal kullanımı, sıfır risk. Tepkimeleri atom seviyesinde izleyin, Na + su gibi tehlikeli reaksiyonları güvenle gözlemleyin.</p>
-                        </div>
-                        <a href="{{ url_for('kimya_lab') }}" class="inline-block w-full text-center bg-orange-500 hover:bg-orange-400 text-white py-2.5 rounded-xl font-bold transition shadow-lg shadow-orange-500/30 anim-push">Kimya Panosuna Git &rarr;</a>
-                    </div>
-                </div>
-
-                <!-- BİYOLOJİ LAB CARD -->
-                <div class="group rounded-2xl overflow-hidden border border-white/10 shadow-xl relative bg-slate-900 anim-fade-push anim-morph-card" data-delay="300">
-                    <img src="{{ url_for('static', filename='images/Biyoloji2.png') }}" alt="Biyoloji Lab" class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-40 transition-opacity duration-500">
-                    <div class="p-6 relative z-10 flex flex-col h-full justify-between min-h-[320px]">
-                        <div>
-                            <h3 class="text-2xl font-bold mb-2 text-white">Biyoloji</h3>
-                            <p class="text-slate-200 mb-4 text-sm font-medium">Hücrenin içine bizzat girin. Sanal diseksiyon, organel turları ve mitoz bölünmeyi adım adım, renkli ve 100x daha büyük izleyin.</p>
-                        </div>
-                        <a href="{{ url_for('biyoloji_lab') }}" class="inline-block w-full text-center bg-emerald-500 hover:bg-emerald-400 text-white py-2.5 rounded-xl font-bold transition shadow-lg shadow-emerald-500/30 anim-push">Biyoloji Panosuna Git &rarr;</a>
-                    </div>
-                </div>
+                <video class="w-full aspect-video max-h-[340px] object-cover" controls poster="{{ url_for('static', filename='images/ideal fizik modelleri.jpg') }}">
+                    <source src="{{ url_for('static', filename='demo-video.mp4') }}" type="video/mp4">
+                    Tarayıcınız video desteklemiyor.
+                </video>
             </div>
         </div>
     </section>
